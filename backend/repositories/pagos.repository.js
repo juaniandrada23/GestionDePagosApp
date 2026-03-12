@@ -407,9 +407,7 @@ const totalGeneral = async (empresaId, fechaDesde, fechaHasta, nombreProveedor, 
   const provJoin = nombreProveedor
     ? 'JOIN proveedores ON pagos."idProveedor" = proveedores.id'
     : '';
-  const clientJoin = nombreCliente
-    ? 'JOIN clientes ON pagos."idCliente" = clientes.id'
-    : '';
+  const clientJoin = nombreCliente ? 'JOIN clientes ON pagos."idCliente" = clientes.id' : '';
 
   const { rows } = await pool.query(
     `
@@ -430,7 +428,13 @@ const totalGeneral = async (empresaId, fechaDesde, fechaHasta, nombreProveedor, 
   return rows;
 };
 
-const ingresosEgresosEnRango = async (empresaId, fechadesde, fechahasta, nombreProveedor, nombreCliente) => {
+const ingresosEgresosEnRango = async (
+  empresaId,
+  fechadesde,
+  fechahasta,
+  nombreProveedor,
+  nombreCliente,
+) => {
   const filters = { empresaId, fechadesde, fechahasta };
   if (nombreProveedor) filters.nombreProveedor = nombreProveedor;
   if (nombreCliente) filters.nombreCliente = nombreCliente;
@@ -439,9 +443,7 @@ const ingresosEgresosEnRango = async (empresaId, fechadesde, fechahasta, nombreP
   const provJoin = nombreProveedor
     ? 'JOIN proveedores ON pagos."idProveedor" = proveedores.id'
     : '';
-  const clientJoin = nombreCliente
-    ? 'JOIN clientes ON pagos."idCliente" = clientes.id'
-    : '';
+  const clientJoin = nombreCliente ? 'JOIN clientes ON pagos."idCliente" = clientes.id' : '';
 
   const { rows } = await pool.query(
     `

@@ -49,10 +49,8 @@ const InformesPage: React.FC = () => {
 
   const chartHasData =
     ingresosEgresos != null && (ingresosEgresos.Ingresos > 0 || ingresosEgresos.Egresos > 0);
-  const provHasData =
-    ieProveedor != null && (ieProveedor.Ingresos > 0 || ieProveedor.Egresos > 0);
-  const clienteHasData =
-    ieCliente != null && (ieCliente.Ingresos > 0 || ieCliente.Egresos > 0);
+  const provHasData = ieProveedor != null && (ieProveedor.Ingresos > 0 || ieProveedor.Egresos > 0);
+  const clienteHasData = ieCliente != null && (ieCliente.Ingresos > 0 || ieCliente.Egresos > 0);
 
   const periodoLabel = `${fechaDesde.split('-').reverse().join('/')} — ${fechaHasta.split('-').reverse().join('/')}`;
 

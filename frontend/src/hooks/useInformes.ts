@@ -369,7 +369,14 @@ export function useInformes() {
         for (const canvas of canvases) {
           if (!canvas) continue;
           const img = await html2canvas(canvas, { scale: 3 });
-          doc.addImage(img.toDataURL('image/jpeg', 0.9), 'JPEG', xPos, sectionY - 2, chartWidth, 30);
+          doc.addImage(
+            img.toDataURL('image/jpeg', 0.9),
+            'JPEG',
+            xPos,
+            sectionY - 2,
+            chartWidth,
+            30,
+          );
           xPos += chartWidth + 4;
         }
       } else if (chartRef.current) {

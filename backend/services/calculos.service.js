@@ -13,7 +13,19 @@ const obtenerFiltrado = (empresaId, filters) =>
 const obtenerTotalGeneral = (empresaId, fechaDesde, fechaHasta, nombreProveedor, nombreCliente) =>
   pagosRepo.totalGeneral(empresaId, fechaDesde, fechaHasta, nombreProveedor, nombreCliente);
 
-const obtenerIngresosYEgresos = (empresaId, fechadesde, fechahasta, nombreProveedor, nombreCliente) =>
-  pagosRepo.ingresosEgresosEnRango(empresaId, fechadesde, fechahasta, nombreProveedor, nombreCliente);
+const obtenerIngresosYEgresos = (
+  empresaId,
+  fechadesde,
+  fechahasta,
+  nombreProveedor,
+  nombreCliente,
+) =>
+  pagosRepo.ingresosEgresosEnRango(
+    empresaId,
+    fechadesde,
+    fechahasta,
+    nombreProveedor,
+    nombreCliente,
+  );
 
 module.exports = { obtenerTotal, obtenerFiltrado, obtenerTotalGeneral, obtenerIngresosYEgresos };
