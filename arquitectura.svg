@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1060 780" font-family="'Montserrat', 'Segoe UI', 'Inter', system-ui, sans-serif">
+  <!-- Google Fonts import -->
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap');
+    </style>
+    <!-- Gradients (white, gray, light blue palette) -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#eff6ff"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="accentGradLight" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e0e7ff"/>
+      <stop offset="100%" stop-color="#c7d2fe"/>
+    </linearGradient>
+
+    <!-- Single arrow marker -->
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#64748b"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <polygon points="0 0, 10 4, 0 8" fill="#3b82f6"/>
+    </marker>
+
+    <!-- Shadows -->
+    <filter id="cardShadow" x="-6%" y="-6%" width="112%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.08"/>
+    </filter>
+    <filter id="lightShadow" x="-4%" y="-4%" width="108%" height="114%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <!-- ============ BACKGROUND ============ -->
+  <rect width="1060" height="780" rx="20" fill="url(#bgGrad)"/>
+
+  <!-- Title -->
+  <text x="530" y="42" text-anchor="middle" font-size="24" font-weight="700" fill="#0f172a" letter-spacing="1.5">ARQUITECTURA DEL SISTEMA</text>
+  <line x1="390" y1="54" x2="670" y2="54" stroke="#cbd5e1" stroke-width="1.2"/>
+
+  <!-- ============ BROWSER (User) ============ -->
+  <rect x="410" y="72" width="240" height="58" rx="14" fill="url(#accentGradLight)" stroke="#94a3b8" stroke-width="1.5" filter="url(#lightShadow)"/>
+  <!-- Monitor icon -->
+  <rect x="434" y="88" width="20" height="15" rx="2" fill="none" stroke="#475569" stroke-width="1.5"/>
+  <line x1="440" y1="103" x2="450" y2="103" stroke="#475569" stroke-width="1.5"/>
+  <line x1="444" y1="103" x2="444" y2="108" stroke="#475569" stroke-width="1.5"/>
+  <text x="466" y="97" font-size="15" font-weight="700" fill="#0f172a" letter-spacing="0.3">Usuario</text>
+  <text x="466" y="113" font-size="11" font-weight="400" fill="#64748b">Navegador Web</text>
+
+  <!-- Arrow: Browser -> Frontend -->
+  <path d="M530,130 L530,186" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#arrow)" stroke-linecap="round"/>
+  <!-- Port badge on arrow -->
+  <rect x="540" y="147" width="46" height="20" rx="10" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="563" y="161" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af" letter-spacing="0.5">:3000</text>
+
+  <!-- ============ DOCKER COMPOSE BOUNDARY ============ -->
+  <rect x="50" y="180" width="960" height="570" rx="18" fill="white" fill-opacity="0.30" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="12 6"/>
+  <!-- Docker badge -->
+  <rect x="70" y="168" width="140" height="24" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="140" y="184" text-anchor="middle" font-size="12" font-weight="600" fill="#64748b" letter-spacing="0.5">Docker Compose</text>
+
+  <!-- ============ FRONTEND CARD ============ -->
+  <rect x="300" y="210" width="400" height="120" rx="16" fill="white" stroke="#93c5fd" stroke-width="1.5" filter="url(#cardShadow)"/>
+  <!-- Color accent bar -->
+  <rect x="300" y="210" width="400" height="7" rx="3.5" fill="url(#accentGrad)"/>
+  <!-- Globe icon -->
+  <circle cx="340" cy="248" r="16" fill="#dbeafe" stroke="#93c5fd" stroke-width="1.2"/>
+  <circle cx="340" cy="248" r="9" fill="none" stroke="#475569" stroke-width="1"/>
+  <ellipse cx="340" cy="248" rx="4.5" ry="9" fill="none" stroke="#475569" stroke-width="0.8"/>
+  <line x1="331" y1="248" x2="349" y2="248" stroke="#475569" stroke-width="0.8"/>
+  <!-- Title + details -->
+  <text x="368" y="246" font-size="18" font-weight="700" fill="#0f172a" letter-spacing="0.3">Frontend</text>
+  <text x="368" y="265" font-size="12" font-weight="500" fill="#64748b">Nginx + React + Vite</text>
+  <!-- Feature pills -->
+  <rect x="318" y="282" width="116" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="376" y="297" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">Archivos estaticos</text>
+  <rect x="444" y="282" width="102" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="495" y="297" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">Proxy /api/*</text>
+  <rect x="556" y="282" width="120" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="616" y="297" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">Proxy /storage/*</text>
+  <!-- Port badge -->
+  <rect x="632" y="232" width="52" height="22" rx="11" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="658" y="247" text-anchor="middle" font-size="11" font-weight="600" fill="#1e40af" letter-spacing="0.5">3000</text>
+
+  <!-- ============ BACKEND CARD ============ -->
+  <rect x="80" y="430" width="380" height="130" rx="16" fill="white" stroke="#cbd5e1" stroke-width="1.5" filter="url(#cardShadow)"/>
+  <rect x="80" y="430" width="380" height="7" rx="3.5" fill="#e2e8f0"/>
+  <!-- Server icon -->
+  <rect x="112" y="462" width="24" height="10" rx="3" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
+  <rect x="112" y="476" width="24" height="10" rx="3" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
+  <circle cx="130" cy="467" r="2" fill="#64748b"/>
+  <circle cx="130" cy="481" r="2" fill="#64748b"/>
+  <!-- Title + details -->
+  <text x="150" y="474" font-size="18" font-weight="700" fill="#0f172a" letter-spacing="0.3">Backend</text>
+  <text x="150" y="493" font-size="12" font-weight="500" fill="#64748b">Node.js + Express</text>
+  <!-- Feature pills -->
+  <rect x="100" y="508" width="76" height="22" rx="11" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="138" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">API REST</text>
+  <rect x="186" y="508" width="112" height="22" rx="11" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="242" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">Migraciones auto</text>
+  <rect x="308" y="508" width="66" height="22" rx="11" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="341" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">JWT Auth</text>
+  <rect x="384" y="508" width="56" height="22" rx="11" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="412" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">RLS</text>
+  <!-- Port badge -->
+  <rect x="390" y="455" width="52" height="22" rx="11" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1"/>
+  <text x="416" y="470" text-anchor="middle" font-size="11" font-weight="600" fill="#334155" letter-spacing="0.5">3001</text>
+
+  <!-- ============ MINIO CARD ============ -->
+  <rect x="580" y="430" width="370" height="130" rx="16" fill="white" stroke="#93c5fd" stroke-width="1.5" filter="url(#cardShadow)"/>
+  <rect x="580" y="430" width="370" height="7" rx="3.5" fill="url(#accentGrad)"/>
+  <!-- Cloud/bucket icon -->
+  <path d="M622,472 a9,9 0 0,1 16,-2 a7,7 0 0,1 12,5 l-28,0 a6,6 0 0,1 0,-3z" fill="#dbeafe" stroke="#64748b" stroke-width="1.2"/>
+  <rect x="614" y="477" width="32" height="10" rx="3" fill="#dbeafe" stroke="#64748b" stroke-width="1"/>
+  <!-- Title + details -->
+  <text x="660" y="474" font-size="18" font-weight="700" fill="#0f172a" letter-spacing="0.3">MinIO</text>
+  <text x="660" y="493" font-size="12" font-weight="500" fill="#64748b">Almacenamiento S3-compatible</text>
+  <!-- Feature pills -->
+  <rect x="600" y="508" width="86" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="643" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">Imagenes</text>
+  <rect x="696" y="508" width="82" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="737" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">minio_data</text>
+  <rect x="788" y="508" width="68" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="822" y="523" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">Consola</text>
+  <!-- Port badges -->
+  <rect x="872" y="455" width="62" height="22" rx="11" fill="#dbeafe" stroke="#93c5fd" stroke-width="1"/>
+  <text x="903" y="470" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af" letter-spacing="0.5">9000/01</text>
+
+  <!-- ============ POSTGRESQL CARD ============ -->
+  <rect x="80" y="630" width="300" height="100" rx="16" fill="white" stroke="#cbd5e1" stroke-width="1.5" filter="url(#cardShadow)"/>
+  <rect x="80" y="630" width="300" height="7" rx="3.5" fill="#e2e8f0"/>
+  <!-- DB icon (cylinder) -->
+  <ellipse cx="122" cy="664" rx="14" ry="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
+  <rect x="108" y="664" width="28" height="16" fill="#f1f5f9"/>
+  <line x1="108" y1="664" x2="108" y2="680" stroke="#64748b" stroke-width="1.2"/>
+  <line x1="136" y1="664" x2="136" y2="680" stroke="#64748b" stroke-width="1.2"/>
+  <ellipse cx="122" cy="680" rx="14" ry="6" fill="#f1f5f9" stroke="#64748b" stroke-width="1.2"/>
+  <!-- Title + details -->
+  <text x="150" y="672" font-size="17" font-weight="700" fill="#0f172a" letter-spacing="0.3">PostgreSQL 16</text>
+  <text x="150" y="690" font-size="11" font-weight="500" fill="#64748b">DB: gestion_de_pagos</text>
+  <!-- Feature pills -->
+  <rect x="100" y="700" width="102" height="20" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="151" y="714" text-anchor="middle" font-size="9.5" font-weight="500" fill="#334155">RLS por empresa</text>
+  <rect x="212" y="700" width="62" height="20" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="243" y="714" text-anchor="middle" font-size="9.5" font-weight="500" fill="#334155">pgdata</text>
+  <rect x="284" y="700" width="56" height="20" rx="10" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="312" y="714" text-anchor="middle" font-size="9.5" font-weight="500" fill="#334155">5432</text>
+
+  <!-- ============ VOLUMES SECTION ============ -->
+  <rect x="480" y="640" width="460" height="80" rx="14" fill="white" fill-opacity="0.55" stroke="#cbd5e1" stroke-width="1.2" stroke-dasharray="8 4"/>
+  <text x="502" y="666" font-size="11" font-weight="600" fill="#94a3b8" letter-spacing="0.5">Volumenes Docker</text>
+  <!-- Volume pills -->
+  <rect x="502" y="680" width="76" height="22" rx="11" fill="#f8fafc" stroke="#cbd5e1" stroke-width="0.8"/>
+  <text x="540" y="695" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">pgdata</text>
+  <rect x="590" y="680" width="86" height="22" rx="11" fill="#eff6ff" stroke="#bfdbfe" stroke-width="0.8"/>
+  <text x="633" y="695" text-anchor="middle" font-size="10" font-weight="500" fill="#334155">minio_data</text>
+
+  <!-- ============ CONNECTION ARROWS ============ -->
+
+  <!-- Frontend -> Backend (/api/*) -->
+  <path d="M400,330 Q400,380 330,380 Q280,380 270,428" stroke="#3b82f6" stroke-width="2.5" fill="none" marker-end="url(#arrowBlue)" stroke-linecap="round"/>
+  <rect x="302" y="369" width="56" height="22" rx="11" fill="white" stroke="#93c5fd" stroke-width="1"/>
+  <text x="330" y="384" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af" letter-spacing="0.3">/api/*</text>
+
+  <!-- Frontend -> MinIO (/storage/*) -->
+  <path d="M600,330 Q600,380 680,380 Q730,380 740,428" stroke="#3b82f6" stroke-width="2.5" fill="none" marker-end="url(#arrowBlue)" stroke-linecap="round"/>
+  <rect x="648" y="369" width="80" height="22" rx="11" fill="white" stroke="#93c5fd" stroke-width="1"/>
+  <text x="688" y="384" text-anchor="middle" font-size="10" font-weight="600" fill="#1e40af" letter-spacing="0.3">/storage/*</text>
+
+  <!-- Backend -> PostgreSQL -->
+  <path d="M240,560 Q240,595 230,628" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#arrow)" stroke-linecap="round"/>
+  <rect x="252" y="582" width="64" height="22" rx="11" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="284" y="597" text-anchor="middle" font-size="10" font-weight="600" fill="#334155" letter-spacing="0.3">SQL/TCP</text>
+
+  <!-- Backend -> MinIO -->
+  <path d="M460,495 L578,495" stroke="#64748b" stroke-width="2.5" fill="none" marker-end="url(#arrow)" stroke-linecap="round"/>
+  <rect x="476" y="466" width="68" height="22" rx="11" fill="white" stroke="#cbd5e1" stroke-width="1"/>
+  <text x="510" y="481" text-anchor="middle" font-size="10" font-weight="600" fill="#334155" letter-spacing="0.3">S3 API</text>
+
+</svg>

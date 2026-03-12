@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #eaebed;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+a,
+input,
+button {
+  font-family: 'Montserrat', sans-serif;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(18%) sepia(80%) saturate(2476%) hue-rotate(171deg) brightness(97%) contrast(103%);
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}

@@ -1,0 +1,13 @@
+import { z } from 'zod';
+
+export const ventaSchema = z.object({
+  cliente: z.string().default(''),
+  proveedor: z.string().default(''),
+  monto: z.string().min(1, 'El monto es requerido'),
+  medioPago: z.string().min(1, 'El medio de pago es requerido'),
+  fecha: z.string().min(1, 'La fecha es requerida'),
+  usdDelDia: z.string().min(1, 'El dolar del dia es requerido'),
+  descripcion: z.string().default(''),
+});
+
+export type VentaFormData = z.infer<typeof ventaSchema>;
