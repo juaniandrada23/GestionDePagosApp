@@ -1,0 +1,4 @@
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*) npx lint-staged --shell "$(command -v bash).exe" ;;
+  *) npx lint-staged ;;
+esac

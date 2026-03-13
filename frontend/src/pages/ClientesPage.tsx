@@ -1,13 +1,13 @@
 import React from 'react';
-import Dialog from '@mui/material/Dialog';
-import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 import { MdSearch, MdAdd, MdEdit, MdDeleteOutline } from 'react-icons/md';
 import { FiUsers } from 'react-icons/fi';
 import PageLayout from '@/components/layout/PageLayout';
 import ConfirmDialog from '@/components/feedback/ConfirmDialog';
+import Modal from '@/components/shared/Modal';
 import ErrorAlert from '@/components/shared/ErrorAlert';
 import FormField from '@/components/shared/FormField';
+import { BTN_CANCEL } from '@/config/constants';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useClientes } from '@/hooks/useClientes';
 
@@ -196,121 +196,81 @@ const ClientesPage: React.FC = () => {
         )}
       </div>
 
-      <Dialog
+      <Modal
         open={modalCrear}
         onClose={() => setModalCrear(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '500px', width: '100%' } }}
+        size="md"
+        title="Nuevo cliente"
+        onSubmit={handleCrear}
+        submitLabel="Crear"
+        isLoading={isSubmitting}
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">Nuevo cliente</h2>
-        </div>
-        <div className="px-6 pb-6">
-          <ErrorAlert message={apiError} />
-          {renderFormFields()}
-          <div className="flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              onClick={() => setModalCrear(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleCrear}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#006989] rounded-xl hover:bg-[#053F61] disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null} Crear
-            </button>
-          </div>
-        </div>
-      </Dialog>
+        <ErrorAlert message={apiError} />
+        {renderFormFields()}
+      </Modal>
 
-      <Dialog
+      <Modal
         open={modalEditar}
         onClose={() => setModalEditar(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '500px', width: '100%' } }}
+        size="md"
+        title="Editar cliente"
+        onSubmit={handleEditar}
+        submitLabel="Guardar"
+        isLoading={isSubmitting}
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">Editar cliente</h2>
-        </div>
-        <div className="px-6 pb-6">
-          <ErrorAlert message={apiError} />
-          {renderFormFields()}
-          <div className="flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              onClick={() => setModalEditar(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleEditar}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#006989] rounded-xl hover:bg-[#053F61] disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null} Guardar
-            </button>
-          </div>
-        </div>
-      </Dialog>
+        <ErrorAlert message={apiError} />
+        {renderFormFields()}
+      </Modal>
 
-      <Dialog
-        open={modalDetalle}
+      <Modal
+        open={modalDetalle && !!selectedCliente}
         onClose={() => setModalDetalle(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '500px', width: '100%' } }}
+        size="md"
+        title={selectedCliente?.nombre}
+        headerRight={
+          selectedCliente ? (
+            <span
+              className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-semibold ${selectedCliente.activo ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}
+            >
+              {selectedCliente.activo ? 'Activo' : 'Inactivo'}
+            </span>
+          ) : undefined
+        }
+        footer={
+          <button type="button" onClick={() => setModalDetalle(false)} className={BTN_CANCEL}>
+            Cerrar
+          </button>
+        }
       >
         {selectedCliente && (
-          <div className="px-6 pt-6 pb-6">
-            <div className="flex items-start justify-between mb-4">
-              <h2 className="text-lg font-bold text-gray-900">{selectedCliente.nombre}</h2>
-              <span
-                className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-semibold ${selectedCliente.activo ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-500'}`}
-              >
-                {selectedCliente.activo ? 'Activo' : 'Inactivo'}
-              </span>
-            </div>
-            <div className="space-y-2">
-              {selectedCliente.cuit_dni && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">CUIT/DNI</span>
-                  <span className="text-gray-900">{selectedCliente.cuit_dni}</span>
-                </div>
-              )}
-              {selectedCliente.telefono && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Telefono</span>
-                  <span className="text-gray-900">{selectedCliente.telefono}</span>
-                </div>
-              )}
-              {selectedCliente.email && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Email</span>
-                  <span className="text-gray-900">{selectedCliente.email}</span>
-                </div>
-              )}
-              {selectedCliente.direccion && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Direccion</span>
-                  <span className="text-gray-900">{selectedCliente.direccion}</span>
-                </div>
-              )}
-            </div>
-            <div className="flex justify-end mt-4">
-              <button
-                type="button"
-                onClick={() => setModalDetalle(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-              >
-                Cerrar
-              </button>
-            </div>
+          <div className="space-y-2">
+            {selectedCliente.cuit_dni && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">CUIT/DNI</span>
+                <span className="text-gray-900">{selectedCliente.cuit_dni}</span>
+              </div>
+            )}
+            {selectedCliente.telefono && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Telefono</span>
+                <span className="text-gray-900">{selectedCliente.telefono}</span>
+              </div>
+            )}
+            {selectedCliente.email && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Email</span>
+                <span className="text-gray-900">{selectedCliente.email}</span>
+              </div>
+            )}
+            {selectedCliente.direccion && (
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500">Direccion</span>
+                <span className="text-gray-900">{selectedCliente.direccion}</span>
+              </div>
+            )}
           </div>
         )}
-      </Dialog>
+      </Modal>
 
       <ConfirmDialog
         open={modalEliminar}

@@ -1,0 +1,14 @@
+{
+  "name": "gestion-de-pagos-root",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Root package — Husky + lint-staged only",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3"
+  }
+}

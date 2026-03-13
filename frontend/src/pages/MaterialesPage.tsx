@@ -1,13 +1,13 @@
 import React from 'react';
-import Dialog from '@mui/material/Dialog';
-import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 import { MdSearch, MdAdd, MdEdit, MdDeleteOutline, MdWarning, MdInventory } from 'react-icons/md';
 import { FiPackage, FiAlertTriangle, FiArrowUp, FiArrowDown, FiRefreshCw } from 'react-icons/fi';
 import PageLayout from '@/components/layout/PageLayout';
 import ConfirmDialog from '@/components/feedback/ConfirmDialog';
+import Modal from '@/components/shared/Modal';
 import ErrorAlert from '@/components/shared/ErrorAlert';
 import FormField from '@/components/shared/FormField';
+import { BTN_CANCEL } from '@/config/constants';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useMateriales } from '@/hooks/useMateriales';
 
@@ -351,164 +351,112 @@ const MaterialesPage: React.FC = () => {
         )}
       </div>
 
-      <Dialog
+      <Modal
         open={modalCrear}
         onClose={() => setModalCrear(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '500px', width: '100%' } }}
+        size="md"
+        title="Nuevo material"
+        onSubmit={handleCrear}
+        submitLabel="Crear"
+        isLoading={isSubmitting}
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">Nuevo material</h2>
-        </div>
-        <div className="px-6 pb-6">
-          <ErrorAlert message={apiError} />
-          {renderFormFields(false)}
-          <div className="flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              onClick={() => setModalCrear(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleCrear}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#006989] rounded-xl hover:bg-[#053F61] disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null} Crear
-            </button>
-          </div>
-        </div>
-      </Dialog>
+        <ErrorAlert message={apiError} />
+        {renderFormFields(false)}
+      </Modal>
 
-      <Dialog
+      <Modal
         open={modalEditar}
         onClose={() => setModalEditar(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '500px', width: '100%' } }}
+        size="md"
+        title="Editar material"
+        onSubmit={handleEditar}
+        submitLabel="Guardar"
+        isLoading={isSubmitting}
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">Editar material</h2>
-        </div>
-        <div className="px-6 pb-6">
-          <ErrorAlert message={apiError} />
-          {renderFormFields(true)}
-          <div className="flex justify-end gap-3 mt-4">
-            <button
-              type="button"
-              onClick={() => setModalEditar(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleEditar}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#006989] rounded-xl hover:bg-[#053F61] disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null} Guardar
-            </button>
-          </div>
-        </div>
-      </Dialog>
+        <ErrorAlert message={apiError} />
+        {renderFormFields(true)}
+      </Modal>
 
-      <Dialog
+      <Modal
         open={modalMovimiento}
         onClose={() => setModalMovimiento(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '440px', width: '100%' } }}
+        title="Registrar movimiento"
+        subtitle={
+          selectedMaterial
+            ? `${selectedMaterial.nombre} (Stock: ${selectedMaterial.stock_actual} ${selectedMaterial.unidad_abreviatura})`
+            : undefined
+        }
+        onSubmit={handleMovimiento}
+        submitLabel="Registrar"
+        isLoading={isSubmitting}
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">Registrar movimiento</h2>
-          {selectedMaterial && (
-            <p className="text-sm text-gray-500">
-              {selectedMaterial.nombre} (Stock: {selectedMaterial.stock_actual}{' '}
-              {selectedMaterial.unidad_abreviatura})
-            </p>
-          )}
-        </div>
-        <div className="px-6 pb-6 space-y-3">
-          <ErrorAlert message={apiError} />
-          <FormField label="Tipo" error={movFormErrors.tipo}>
-            <select
-              value={movForm.tipo}
-              onChange={(e) => updateMovForm('tipo', e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none bg-white"
-            >
-              <option value="entrada">Entrada</option>
-              <option value="salida">Salida</option>
-              <option value="ajuste">Ajuste</option>
-            </select>
-          </FormField>
-          <FormField
-            label={movForm.tipo === 'ajuste' ? 'Nuevo stock' : 'Cantidad'}
-            error={movFormErrors.cantidad}
+        <ErrorAlert message={apiError} />
+        <FormField label="Tipo" error={movFormErrors.tipo}>
+          <select
+            value={movForm.tipo}
+            onChange={(e) => updateMovForm('tipo', e.target.value)}
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none bg-white"
           >
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={movForm.cantidad}
-              onChange={(e) => updateMovForm('cantidad', e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none"
-            />
-          </FormField>
-          <FormField label="Motivo" error={movFormErrors.motivo}>
-            <input
-              type="text"
-              value={movForm.motivo}
-              onChange={(e) => updateMovForm('motivo', e.target.value)}
-              placeholder="Descripcion opcional"
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none"
-            />
-          </FormField>
-          <div className="flex justify-end gap-3 pt-1">
-            <button
-              type="button"
-              onClick={() => setModalMovimiento(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleMovimiento}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#006989] rounded-xl hover:bg-[#053F61] disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null} Registrar
-            </button>
-          </div>
-        </div>
-      </Dialog>
+            <option value="entrada">Entrada</option>
+            <option value="salida">Salida</option>
+            <option value="ajuste">Ajuste</option>
+          </select>
+        </FormField>
+        <FormField
+          label={movForm.tipo === 'ajuste' ? 'Nuevo stock' : 'Cantidad'}
+          error={movFormErrors.cantidad}
+        >
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            value={movForm.cantidad}
+            onChange={(e) => updateMovForm('cantidad', e.target.value)}
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none"
+          />
+        </FormField>
+        <FormField label="Motivo" error={movFormErrors.motivo}>
+          <input
+            type="text"
+            value={movForm.motivo}
+            onChange={(e) => updateMovForm('motivo', e.target.value)}
+            placeholder="Descripcion opcional"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none"
+          />
+        </FormField>
+      </Modal>
 
-      <Dialog
-        open={modalDetalle}
+      <Modal
+        open={modalDetalle && !!selectedMaterial}
         onClose={() => setModalDetalle(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '600px', width: '100%' } }}
+        size="lg"
+        title={selectedMaterial?.nombre}
+        subtitle={
+          selectedMaterial
+            ? `${selectedMaterial.codigo || 'Sin codigo'} ${selectedMaterial.categoria_nombre ? `| ${selectedMaterial.categoria_nombre}` : ''}`
+            : undefined
+        }
+        headerRight={
+          selectedMaterial ? (
+            <span
+              className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-semibold ${stockColor(selectedMaterial)}`}
+            >
+              {selectedMaterial.stock_actual} {selectedMaterial.unidad_abreviatura}
+            </span>
+          ) : undefined
+        }
+        footer={
+          <button type="button" onClick={() => setModalDetalle(false)} className={BTN_CANCEL}>
+            Cerrar
+          </button>
+        }
       >
         {selectedMaterial && (
-          <div className="px-6 pt-6 pb-6">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h2 className="text-lg font-bold text-gray-900">{selectedMaterial.nombre}</h2>
-                <p className="text-sm text-gray-500">
-                  {selectedMaterial.codigo || 'Sin codigo'}{' '}
-                  {selectedMaterial.categoria_nombre
-                    ? `| ${selectedMaterial.categoria_nombre}`
-                    : ''}
-                </p>
-              </div>
-              <span
-                className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-semibold ${stockColor(selectedMaterial)}`}
-              >
-                {selectedMaterial.stock_actual} {selectedMaterial.unidad_abreviatura}
-              </span>
-            </div>
+          <>
             {selectedMaterial.descripcion && (
-              <p className="text-sm text-gray-600 mb-4">{selectedMaterial.descripcion}</p>
+              <p className="text-sm text-gray-600">{selectedMaterial.descripcion}</p>
             )}
-            <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="grid grid-cols-3 gap-3">
               <div className="bg-gray-50 rounded-lg p-3 text-center">
                 <p className="text-xs text-gray-500">Venta</p>
                 <p className="text-sm font-bold text-gray-900">
@@ -529,47 +477,44 @@ const MaterialesPage: React.FC = () => {
               </div>
             </div>
 
-            <h3 className="text-sm font-semibold text-gray-800 mb-2">Historial de movimientos</h3>
-            {movimientos.length === 0 ? (
-              <p className="text-sm text-gray-400 py-4 text-center">Sin movimientos registrados</p>
-            ) : (
-              <div className="max-h-60 overflow-y-auto space-y-2">
-                {movimientos.map((mov) => (
-                  <div key={mov.id} className="flex items-center gap-3 p-2.5 rounded-lg bg-gray-50">
-                    {tipoIcon(mov.tipo)}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-800 capitalize">
-                        {mov.tipo}: {mov.cantidad}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {mov.motivo || 'Sin motivo'} &middot; {mov.username}
-                      </p>
+            <div>
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">Historial de movimientos</h3>
+              {movimientos.length === 0 ? (
+                <p className="text-sm text-gray-400 py-4 text-center">
+                  Sin movimientos registrados
+                </p>
+              ) : (
+                <div className="max-h-60 overflow-y-auto space-y-2">
+                  {movimientos.map((mov) => (
+                    <div
+                      key={mov.id}
+                      className="flex items-center gap-3 p-2.5 rounded-lg bg-gray-50"
+                    >
+                      {tipoIcon(mov.tipo)}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-800 capitalize">
+                          {mov.tipo}: {mov.cantidad}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {mov.motivo || 'Sin motivo'} &middot; {mov.username}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs font-medium text-gray-600">
+                          Stock: {mov.stock_resultante}
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          {new Date(mov.fecha).toLocaleDateString()}
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs font-medium text-gray-600">
-                        Stock: {mov.stock_resultante}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {new Date(mov.fecha).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="flex justify-end mt-4">
-              <button
-                type="button"
-                onClick={() => setModalDetalle(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-              >
-                Cerrar
-              </button>
+                  ))}
+                </div>
+              )}
             </div>
-          </div>
+          </>
         )}
-      </Dialog>
+      </Modal>
 
       <ConfirmDialog
         open={modalEliminar}

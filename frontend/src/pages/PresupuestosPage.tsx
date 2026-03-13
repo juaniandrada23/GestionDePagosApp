@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import Dialog from '@mui/material/Dialog';
-import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from '@mui/material/Skeleton';
 import {
   MdAdd,
@@ -15,14 +13,15 @@ import { FiFileText } from 'react-icons/fi';
 import PageLayout from '@/components/layout/PageLayout';
 import AppSnackbar from '@/components/feedback/AppSnackbar';
 import ConfirmDialog from '@/components/feedback/ConfirmDialog';
+import Modal from '@/components/shared/Modal';
 import FormField from '@/components/shared/FormField';
 import EmptyState from '@/components/shared/EmptyState';
+import { BTN_CANCEL, SELECT_CLASS, INPUT_CLASS, TH_CLASS } from '@/config/constants';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { usePresupuestos } from '@/hooks/usePresupuestos';
 import { usePresupuestoForm } from '@/hooks/usePresupuestoForm';
 import { usePresupuestoPDF } from '@/hooks/usePresupuestoPDF';
 import { useMobileScreen } from '@/hooks/useMobileScreen';
-import { SELECT_CLASS, INPUT_CLASS, TH_CLASS } from '@/config/constants';
 import { formatMonto, formatFecha } from '@/utils/formatters';
 import type { Presupuesto, EstadoPresupuesto } from '@/types/presupuesto';
 
@@ -297,30 +296,34 @@ const PresupuestosPage: React.FC = () => {
         />
       )}
 
-      <Dialog
-        open={modalDetalle}
+      <Modal
+        open={modalDetalle && !!detallePresupuesto}
         onClose={() => setModalDetalle(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '700px', width: '100%' } }}
+        size="xl"
+        title={detallePresupuesto ? `Presupuesto #${detallePresupuesto.numero}` : undefined}
+        subtitle={
+          detallePresupuesto
+            ? `${detallePresupuesto.cliente_nombre} · ${formatFecha(detallePresupuesto.fecha)}`
+            : undefined
+        }
+        headerRight={
+          detallePresupuesto ? (
+            <span
+              className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-semibold capitalize ${estadoBadge[detallePresupuesto.estado]}`}
+            >
+              {detallePresupuesto.estado}
+            </span>
+          ) : undefined
+        }
+        footer={
+          <button type="button" onClick={() => setModalDetalle(false)} className={BTN_CANCEL}>
+            Cerrar
+          </button>
+        }
       >
         {detallePresupuesto && (
-          <div className="px-6 pt-6 pb-6">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <h2 className="text-lg font-bold text-gray-900">
-                  Presupuesto #{detallePresupuesto.numero}
-                </h2>
-                <p className="text-sm text-gray-500">
-                  {detallePresupuesto.cliente_nombre} · {formatFecha(detallePresupuesto.fecha)}
-                </p>
-              </div>
-              <span
-                className={`inline-flex items-center px-3 py-1 rounded-lg text-sm font-semibold capitalize ${estadoBadge[detallePresupuesto.estado]}`}
-              >
-                {detallePresupuesto.estado}
-              </span>
-            </div>
-
-            <div className="overflow-x-auto mb-4">
+          <>
+            <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b border-gray-200">
@@ -384,87 +387,57 @@ const PresupuestosPage: React.FC = () => {
             </div>
 
             {detallePresupuesto.observaciones && (
-              <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <div className="p-3 bg-gray-50 rounded-lg">
                 <p className="text-xs font-semibold text-gray-500 uppercase mb-1">Observaciones</p>
                 <p className="text-sm text-gray-700">{detallePresupuesto.observaciones}</p>
               </div>
             )}
-
-            <div className="flex justify-end mt-4">
-              <button
-                type="button"
-                onClick={() => setModalDetalle(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-              >
-                Cerrar
-              </button>
-            </div>
-          </div>
+          </>
         )}
-      </Dialog>
+      </Modal>
 
-      <Dialog
+      <Modal
         open={modalAceptar}
         onClose={() => setModalAceptar(false)}
-        PaperProps={{ sx: { borderRadius: '16px', maxWidth: '440px', width: '100%' } }}
+        title="Aceptar Presupuesto"
+        subtitle={
+          selectedPresupuesto
+            ? `#${selectedPresupuesto.numero} · ${selectedPresupuesto.cliente_nombre} · ${formatMonto(selectedPresupuesto.total)}`
+            : undefined
+        }
+        onSubmit={handleAceptar}
+        submitLabel="Aceptar"
+        isLoading={isSubmitting}
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">Aceptar Presupuesto</h2>
-          {selectedPresupuesto && (
-            <p className="text-sm text-gray-500">
-              #{selectedPresupuesto.numero} · {selectedPresupuesto.cliente_nombre} ·{' '}
-              {formatMonto(selectedPresupuesto.total)}
-            </p>
-          )}
-        </div>
-        <div className="px-6 pb-6 space-y-3">
-          <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded-lg">
-            Al aceptar se generará una venta y se descontará el stock de los materiales.
-          </p>
-          <FormField label="Medio de Pago" error={aceptarFormErrors.medioPago}>
-            <select
-              value={aceptarForm.medioPago}
-              onChange={(e) => setAceptarForm((prev) => ({ ...prev, medioPago: e.target.value }))}
-              className={SELECT_CLASS}
-            >
-              <option value="" disabled>
-                Seleccione
+        <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded-lg">
+          Al aceptar se generará una venta y se descontará el stock de los materiales.
+        </p>
+        <FormField label="Medio de Pago" error={aceptarFormErrors.medioPago}>
+          <select
+            value={aceptarForm.medioPago}
+            onChange={(e) => setAceptarForm((prev) => ({ ...prev, medioPago: e.target.value }))}
+            className={SELECT_CLASS}
+          >
+            <option value="" disabled>
+              Seleccione
+            </option>
+            {mediodepago.map((m) => (
+              <option key={m.nombreMedioPago} value={m.nombreMedioPago}>
+                {m.nombreMedioPago}
               </option>
-              {mediodepago.map((m) => (
-                <option key={m.nombreMedioPago} value={m.nombreMedioPago}>
-                  {m.nombreMedioPago}
-                </option>
-              ))}
-            </select>
-          </FormField>
-          <FormField label="Dolar del dia" error={aceptarFormErrors.usdDelDia}>
-            <input
-              type="number"
-              step="any"
-              value={aceptarForm.usdDelDia}
-              onChange={(e) => setAceptarForm((prev) => ({ ...prev, usdDelDia: e.target.value }))}
-              className={INPUT_CLASS}
-            />
-          </FormField>
-          <div className="flex justify-end gap-3 pt-1">
-            <button
-              type="button"
-              onClick={() => setModalAceptar(false)}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={handleAceptar}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-emerald-600 rounded-xl hover:bg-emerald-700 disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null} Aceptar
-            </button>
-          </div>
-        </div>
-      </Dialog>
+            ))}
+          </select>
+        </FormField>
+        <FormField label="Dolar del dia" error={aceptarFormErrors.usdDelDia}>
+          <input
+            type="number"
+            step="any"
+            value={aceptarForm.usdDelDia}
+            onChange={(e) => setAceptarForm((prev) => ({ ...prev, usdDelDia: e.target.value }))}
+            className={INPUT_CLASS}
+          />
+        </FormField>
+      </Modal>
 
       <ConfirmDialog
         open={modalEliminar}
@@ -522,206 +495,183 @@ function PresupuestoFormDialog({
 
   return (
     <>
-      <Dialog
+      <Modal
         open={open}
         onClose={onClose}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: '16px' } }}
+        size="full"
+        title={
+          editPresupuesto ? `Editar Presupuesto #${editPresupuesto.numero}` : 'Nuevo Presupuesto'
+        }
+        onSubmit={() => handleSubmit(onSuccess)}
+        submitLabel={editPresupuesto ? 'Guardar' : 'Crear'}
+        isLoading={isSubmitting}
+        scrollable
       >
-        <div className="px-6 pt-6 pb-2">
-          <h2 className="text-base font-semibold text-gray-800">
-            {editPresupuesto
-              ? `Editar Presupuesto #${editPresupuesto.numero}`
-              : 'Nuevo Presupuesto'}
-          </h2>
-        </div>
-        <div className="px-6 pb-6 space-y-4 max-h-[70vh] overflow-y-auto">
-          {apiError && <p className="text-sm text-red-600">{apiError}</p>}
+        {apiError && <p className="text-sm text-red-600">{apiError}</p>}
 
-          <div className="grid grid-cols-2 gap-3">
-            <FormField label="Cliente *" error={formErrors.cliente_id}>
-              <select
-                value={form.cliente_id}
-                onChange={(e) => updateField('cliente_id', e.target.value)}
-                className={`${inputCls} bg-white`}
-              >
-                <option value="" disabled>
-                  Seleccione
+        <div className="grid grid-cols-2 gap-3">
+          <FormField label="Cliente *" error={formErrors.cliente_id}>
+            <select
+              value={form.cliente_id}
+              onChange={(e) => updateField('cliente_id', e.target.value)}
+              className={`${inputCls} bg-white`}
+            >
+              <option value="" disabled>
+                Seleccione
+              </option>
+              {nombreclientes.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.nombre}
                 </option>
-                {nombreclientes.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.nombre}
-                  </option>
-                ))}
-              </select>
-            </FormField>
-            <FormField label="Fecha *" error={formErrors.fecha}>
-              <input
-                type="date"
-                value={form.fecha}
-                onChange={(e) => updateField('fecha', e.target.value)}
-                className={inputCls}
-              />
-            </FormField>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">Válido hasta</label>
-              <input
-                type="date"
-                value={form.fecha_validez}
-                onChange={(e) => updateField('fecha_validez', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-600 mb-1">Descuento (%)</label>
-              <input
-                type="number"
-                min="0"
-                max="100"
-                step="0.01"
-                value={form.descuento_porcentaje}
-                onChange={(e) => updateField('descuento_porcentaje', e.target.value)}
-                className={inputCls}
-              />
-            </div>
-          </div>
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-semibold text-gray-700">Items</label>
-              <button
-                type="button"
-                onClick={addItem}
-                className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#006989] bg-[#006989]/10 rounded-lg hover:bg-[#006989]/20 transition-colors"
-              >
-                <MdAdd className="text-sm" /> Agregar línea
-              </button>
-            </div>
-            <div className="space-y-2">
-              {form.items.map((item, i) => (
-                <div key={i} className="flex items-end gap-2 p-3 bg-gray-50 rounded-lg">
-                  <div className="flex-[3]">
-                    <FormField
-                      label={<span className="text-xs text-gray-500">Material</span>}
-                      error={itemErrors[i]?.material_id}
-                    >
-                      <select
-                        value={item.material_id}
-                        onChange={(e) => updateItem(i, 'material_id', e.target.value)}
-                        className={`${inputCls} bg-white text-xs py-1.5`}
-                      >
-                        <option value="" disabled>
-                          Seleccione
-                        </option>
-                        {materiales.map((m) => (
-                          <option key={m.id} value={m.id}>
-                            {m.nombre} ({m.stock_actual} {m.unidad_abreviatura})
-                          </option>
-                        ))}
-                      </select>
-                    </FormField>
-                  </div>
-                  <div className="flex-1">
-                    <FormField
-                      label={<span className="text-xs text-gray-500">Cantidad</span>}
-                      error={itemErrors[i]?.cantidad}
-                    >
-                      <input
-                        type="number"
-                        min="0.01"
-                        step="0.01"
-                        value={item.cantidad}
-                        onChange={(e) => updateItem(i, 'cantidad', e.target.value)}
-                        className={`${inputCls} text-xs py-1.5`}
-                      />
-                    </FormField>
-                  </div>
-                  <div className="flex-1">
-                    <FormField
-                      label={<span className="text-xs text-gray-500">Precio</span>}
-                      error={itemErrors[i]?.precio_unitario}
-                    >
-                      <input
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        value={item.precio_unitario}
-                        onChange={(e) => updateItem(i, 'precio_unitario', e.target.value)}
-                        className={`${inputCls} text-xs py-1.5`}
-                      />
-                    </FormField>
-                  </div>
-                  <div className="flex-1">
-                    <label className="block text-xs text-gray-500 mb-0.5">Subtotal</label>
-                    <p className="text-sm font-semibold text-gray-900 py-1.5">
-                      {formatMonto(getItemSubtotal(i))}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeItem(i)}
-                    className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-colors mb-0.5"
-                    title="Quitar línea"
-                  >
-                    <MdClose className="w-4 h-4" />
-                  </button>
-                </div>
               ))}
-            </div>
-          </div>
-
+            </select>
+          </FormField>
+          <FormField label="Fecha *" error={formErrors.fecha}>
+            <input
+              type="date"
+              value={form.fecha}
+              onChange={(e) => updateField('fecha', e.target.value)}
+              className={inputCls}
+            />
+          </FormField>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Observaciones</label>
-            <textarea
-              value={form.observaciones}
-              onChange={(e) => updateField('observaciones', e.target.value)}
-              rows={2}
-              className={`${inputCls} resize-none`}
+            <label className="block text-sm font-medium text-gray-600 mb-1">Válido hasta</label>
+            <input
+              type="date"
+              value={form.fecha_validez}
+              onChange={(e) => updateField('fecha_validez', e.target.value)}
+              className={inputCls}
             />
           </div>
-
-          <div className="border-t border-gray-200 pt-3 space-y-1">
-            <div className="flex justify-between text-sm">
-              <span className="text-gray-500">Subtotal</span>
-              <span className="text-gray-900 font-medium">{formatMonto(calcularSubtotal())}</span>
-            </div>
-            {parseFloat(form.descuento_porcentaje) > 0 && (
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Descuento ({form.descuento_porcentaje}%)</span>
-                <span className="text-red-600">
-                  -{formatMonto((calcularSubtotal() * parseFloat(form.descuento_porcentaje)) / 100)}
-                </span>
-              </div>
-            )}
-            <div className="flex justify-between text-base font-bold">
-              <span className="text-gray-900">Total</span>
-              <span className="text-[#006989]">{formatMonto(calcularTotal())}</span>
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-50"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSubmit(onSuccess)}
-              disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white bg-[#006989] rounded-xl hover:bg-[#053F61] disabled:opacity-50"
-            >
-              {isSubmitting ? <CircularProgress size={16} color="inherit" /> : null}
-              {editPresupuesto ? 'Guardar' : 'Crear'}
-            </button>
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">Descuento (%)</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.01"
+              value={form.descuento_porcentaje}
+              onChange={(e) => updateField('descuento_porcentaje', e.target.value)}
+              className={inputCls}
+            />
           </div>
         </div>
-      </Dialog>
+
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="text-sm font-semibold text-gray-700">Items</label>
+            <button
+              type="button"
+              onClick={addItem}
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#006989] bg-[#006989]/10 rounded-lg hover:bg-[#006989]/20 transition-colors"
+            >
+              <MdAdd className="text-sm" /> Agregar línea
+            </button>
+          </div>
+          <div className="space-y-2">
+            {form.items.map((item, i) => (
+              <div key={i} className="flex items-end gap-2 p-3 bg-gray-50 rounded-lg">
+                <div className="flex-[3]">
+                  <FormField
+                    label={<span className="text-xs text-gray-500">Material</span>}
+                    error={itemErrors[i]?.material_id}
+                  >
+                    <select
+                      value={item.material_id}
+                      onChange={(e) => updateItem(i, 'material_id', e.target.value)}
+                      className={`${inputCls} bg-white text-xs py-1.5`}
+                    >
+                      <option value="" disabled>
+                        Seleccione
+                      </option>
+                      {materiales.map((m) => (
+                        <option key={m.id} value={m.id}>
+                          {m.nombre} ({m.stock_actual} {m.unidad_abreviatura})
+                        </option>
+                      ))}
+                    </select>
+                  </FormField>
+                </div>
+                <div className="flex-1">
+                  <FormField
+                    label={<span className="text-xs text-gray-500">Cantidad</span>}
+                    error={itemErrors[i]?.cantidad}
+                  >
+                    <input
+                      type="number"
+                      min="0.01"
+                      step="0.01"
+                      value={item.cantidad}
+                      onChange={(e) => updateItem(i, 'cantidad', e.target.value)}
+                      className={`${inputCls} text-xs py-1.5`}
+                    />
+                  </FormField>
+                </div>
+                <div className="flex-1">
+                  <FormField
+                    label={<span className="text-xs text-gray-500">Precio</span>}
+                    error={itemErrors[i]?.precio_unitario}
+                  >
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={item.precio_unitario}
+                      onChange={(e) => updateItem(i, 'precio_unitario', e.target.value)}
+                      className={`${inputCls} text-xs py-1.5`}
+                    />
+                  </FormField>
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs text-gray-500 mb-0.5">Subtotal</label>
+                  <p className="text-sm font-semibold text-gray-900 py-1.5">
+                    {formatMonto(getItemSubtotal(i))}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => removeItem(i)}
+                  className="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-colors mb-0.5"
+                  title="Quitar línea"
+                >
+                  <MdClose className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">Observaciones</label>
+          <textarea
+            value={form.observaciones}
+            onChange={(e) => updateField('observaciones', e.target.value)}
+            rows={2}
+            className={`${inputCls} resize-none`}
+          />
+        </div>
+
+        <div className="border-t border-gray-200 pt-3 space-y-1">
+          <div className="flex justify-between text-sm">
+            <span className="text-gray-500">Subtotal</span>
+            <span className="text-gray-900 font-medium">{formatMonto(calcularSubtotal())}</span>
+          </div>
+          {parseFloat(form.descuento_porcentaje) > 0 && (
+            <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Descuento ({form.descuento_porcentaje}%)</span>
+              <span className="text-red-600">
+                -{formatMonto((calcularSubtotal() * parseFloat(form.descuento_porcentaje)) / 100)}
+              </span>
+            </div>
+          )}
+          <div className="flex justify-between text-base font-bold">
+            <span className="text-gray-900">Total</span>
+            <span className="text-[#006989]">{formatMonto(calcularTotal())}</span>
+          </div>
+        </div>
+      </Modal>
       <AppSnackbar
         open={snackbar.open}
         message={snackbar.message}
