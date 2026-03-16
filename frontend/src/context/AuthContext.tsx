@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback, useMemo } from 'react';
+import React, { createContext, useState, useCallback, useEffect, useMemo } from 'react';
 import type { AuthState, LoginResponse, UserRole } from '@/types/auth';
 import { authService } from '@/services/auth.service';
 
@@ -39,6 +39,14 @@ function loadFromStorage(): AuthState {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, setState] = useState<AuthState>(loadFromStorage);
+
+  useEffect(() => {
+    const onExpired = () => {
+      setState({ token: null, user: null, isAuthenticated: false, isAdmin: false });
+    };
+    window.addEventListener('auth:expired', onExpired);
+    return () => window.removeEventListener('auth:expired', onExpired);
+  }, []);
 
   const login = useCallback((data: LoginResponse) => {
     localStorage.setItem('token', data.token);

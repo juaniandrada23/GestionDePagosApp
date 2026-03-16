@@ -4,7 +4,7 @@
   "private": true,
   "description": "Frontend para GestionDePagos - sistema de gestion empresarial",
   "author": "juaniandrada23",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "dev": "vite",

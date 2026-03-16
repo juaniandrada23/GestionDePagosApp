@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { MedioPago } from '@/types/medioPago';
 
 export const mediosPagoService = {

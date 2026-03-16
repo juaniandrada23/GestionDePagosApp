@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { LoginResponse } from '@/types/auth';
 import type { RegisterForm } from '@/types/empresa';
 

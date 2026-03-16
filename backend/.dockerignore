@@ -4,4 +4,6 @@ npm-debug.log
 .env
 .env.*
 *.md
+Dockerfile*
+docker-compose.yml
 db/ssl

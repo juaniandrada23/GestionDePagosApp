@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { CalculoTotal, CalculoProveedor, IngresosEgresos } from '@/types/calculo';
 
 export const calculosService = {

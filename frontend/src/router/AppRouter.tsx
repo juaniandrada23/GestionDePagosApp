@@ -16,6 +16,7 @@ const UsuariosPage = lazy(() => import('@/pages/UsuariosPage'));
 const MaterialesPage = lazy(() => import('@/pages/MaterialesPage'));
 const ClientesPage = lazy(() => import('@/pages/ClientesPage'));
 const PresupuestosPage = lazy(() => import('@/pages/PresupuestosPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 
 const Loading = () => (
   <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -57,6 +58,8 @@ const AppRouter: React.FC = () => (
           <Route path="/calculos/:userId" element={<CalculosRedirect />} />
           <Route path="/medios/:userId" element={<MediosPagoPage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   </Router>

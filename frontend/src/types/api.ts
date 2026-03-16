@@ -1,8 +1,3 @@
-export interface ApiError {
-  message: string;
-  status: number;
-}
-
 export interface BluelyticsCurrent {
   blue: {
     value_sell: number;

@@ -77,7 +77,7 @@ const InformesPage: React.FC = () => {
             </>
           ) : resumen ? (
             <>
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-emerald-500 p-5">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Ingresos del Período
@@ -92,7 +92,7 @@ const InformesPage: React.FC = () => {
                 <p className="text-xs text-gray-400 mt-1">USD {formatMonto(resumen.IngresosUSD)}</p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-orange-500 p-5">
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Egresos del Período
@@ -105,7 +105,9 @@ const InformesPage: React.FC = () => {
                 <p className="text-xs text-gray-400 mt-1">USD {formatMonto(resumen.EgresosUSD)}</p>
               </div>
 
-              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+              <div
+                className={`bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 ${resumen.MontoTotal >= 0 ? 'border-l-emerald-500' : 'border-l-red-500'} p-5`}
+              >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Balance del Período
@@ -250,6 +252,7 @@ const InformesPage: React.FC = () => {
             </div>
           ) : (
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="h-1 bg-[#006989]" />
               <div className="px-5 py-4 border-b border-gray-100">
                 <h3 className="text-base font-semibold text-gray-800">
                   Distribución Ingresos / Egresos
@@ -308,6 +311,7 @@ const InformesPage: React.FC = () => {
 
           {/* Filters */}
           <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#006989]" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Filtros</h3>
             </div>
@@ -449,7 +453,7 @@ const InformesPage: React.FC = () => {
         >
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-50/80 border-b border-gray-200">
+              <tr className="bg-gray-50 border-b border-gray-200">
                 <th className={thLeft}>Nombre</th>
                 <th className={thLeft}>Tipo</th>
                 <th className={thRight}>Ingresos</th>
@@ -469,7 +473,7 @@ const InformesPage: React.FC = () => {
                 </tr>
               ) : (
                 desglose.map((t, i) => (
-                  <tr key={i} className="hover:bg-gray-50/60 transition-colors">
+                  <tr key={i} className="hover:bg-gray-50 transition-colors">
                     <td className={`${tdBase} font-medium text-gray-800`}>{t.NombreProveedor}</td>
                     <td className={tdBase}>
                       <span

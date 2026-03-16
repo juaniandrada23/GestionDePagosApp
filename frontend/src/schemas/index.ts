@@ -21,6 +21,5 @@ export {
   registerStep1Schema,
   registerStep2Schema,
   registerStep3Schema,
-  registerSchema,
   type RegisterFormData,
 } from './register.schema';

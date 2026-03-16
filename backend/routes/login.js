@@ -11,7 +11,7 @@ const COOKIE_OPTIONS = {
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
   sameSite: 'strict',
-  path: '/login',
+  path: '/',
   maxAge: config.refreshTokenExpiresIn,
 };
 
@@ -42,7 +42,7 @@ login.post(
   auth,
   asyncHandler(async (req, res) => {
     await service.cerrarSesion(req.user.jti, req.user.exp, req.user.userId);
-    res.clearCookie('refreshToken', { path: '/login' });
+    res.clearCookie('refreshToken', { path: '/' });
     res.json({ message: 'Sesión cerrada exitosamente' });
   }),
 );

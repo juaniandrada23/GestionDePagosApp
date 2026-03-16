@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { Usuario, UsuarioNombre, UsuarioSesion } from '@/types/usuario';
 
 interface UploadImagenResponse {

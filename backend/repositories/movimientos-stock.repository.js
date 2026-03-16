@@ -54,18 +54,4 @@ const buscarPorMaterial = async (materialId, empresaId) => {
   return rows;
 };
 
-const buscarPorEmpresa = async (empresaId) => {
-  const { rows } = await pool.query(
-    `SELECT ms.*, u.username, m.nombre AS material_nombre
-     FROM movimientos_stock ms
-     JOIN usuarios u ON ms.usuario_id = u.id
-     JOIN materiales m ON ms.material_id = m.id
-     WHERE ms.empresa_id = $1
-     ORDER BY ms.fecha DESC
-     LIMIT 50`,
-    [empresaId],
-  );
-  return rows;
-};
-
-module.exports = { crear, crearLote, buscarPorMaterial, buscarPorEmpresa };
+module.exports = { crear, crearLote, buscarPorMaterial };

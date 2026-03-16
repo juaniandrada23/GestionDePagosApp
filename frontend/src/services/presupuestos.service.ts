@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { Presupuesto, PdfData } from '@/types/presupuesto';
 
 export const presupuestosService = {
@@ -46,9 +46,5 @@ export const presupuestosService = {
 
   obtenerDatosPdf(id: number): Promise<PdfData> {
     return apiClient.get<PdfData>(`/presupuestos/${id}/pdf-data`);
-  },
-
-  obtenerEstadisticas(): Promise<{ estado: string; cantidad: number }[]> {
-    return apiClient.get(`/presupuestos/stats`);
   },
 };

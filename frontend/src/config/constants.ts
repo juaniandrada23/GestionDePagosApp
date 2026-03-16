@@ -1,4 +1,6 @@
-export const SESSION_TIMEOUT_MS = 300_000;
+export const SESSION_TIMEOUT_MS = 5_000;
+
+export const SESSION_WARNING_SECONDS = 5;
 
 export const ITEMS_PER_PAGE = 10;
 

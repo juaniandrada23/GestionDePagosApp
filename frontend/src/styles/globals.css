@@ -37,21 +37,6 @@ button {
   animation: slide-up 0.3s ease-out;
 }
 
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-slide-in {
-  animation: slide-in 0.3s ease-out;
-}
-
 @keyframes modal-in {
   from {
     opacity: 0;
@@ -65,4 +50,50 @@ button {
 
 .animate-modal-in {
   animation: modal-in 0.2s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c4c8cc;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Text selection */
+::selection {
+  background-color: rgba(0, 105, 137, 0.15);
+  color: inherit;
+}
+
+/* Fade-in-up animation for cards */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s ease-out both;
+}
+
+/* Smooth table row transitions */
+tbody tr {
+  transition: background-color 0.15s ease;
 }

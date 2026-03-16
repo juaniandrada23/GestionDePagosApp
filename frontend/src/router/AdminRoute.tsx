@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import SessionTimeoutModal from '@/components/feedback/SessionTimeoutModal';
 
 const AdminRoute: React.FC = () => {
   const { isAuthenticated, isAdmin, user } = useAuth();
@@ -13,7 +14,12 @@ const AdminRoute: React.FC = () => {
     return <Navigate to={`/dashboard/${user?.id}`} replace />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <Outlet />
+      <SessionTimeoutModal />
+    </>
+  );
 };
 
 export default AdminRoute;

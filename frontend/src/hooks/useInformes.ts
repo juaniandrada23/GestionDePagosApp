@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
+import type { TooltipOptions } from 'chart.js';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import type { CellHookData } from 'jspdf-autotable';
@@ -19,6 +20,20 @@ const defaultHasta = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart
 
 const BAR_COLORS = ['#006989', '#FF5714'] as const;
 
+const TOOLTIP_STYLE: Partial<TooltipOptions> = {
+  backgroundColor: 'rgba(17, 24, 39, 0.88)',
+  titleColor: '#F9FAFB',
+  bodyColor: '#E5E7EB',
+  borderColor: 'rgba(255, 255, 255, 0.08)',
+  borderWidth: 1,
+  cornerRadius: 8,
+  padding: 10,
+  titleFont: { size: 13, weight: 'bold' },
+  bodyFont: { size: 12 },
+  displayColors: true,
+  boxPadding: 4,
+};
+
 function createHorizontalBarChart(canvas: HTMLCanvasElement, data: IngresosEgresos): Chart {
   const ctx = canvas.getContext('2d')!;
   return new Chart(ctx, {
@@ -29,8 +44,9 @@ function createHorizontalBarChart(canvas: HTMLCanvasElement, data: IngresosEgres
         {
           data: [data.Ingresos, data.Egresos],
           backgroundColor: [...BAR_COLORS],
-          borderRadius: 6,
-          barThickness: 28,
+          borderRadius: 8,
+          barThickness: 32,
+          borderSkipped: false as const,
         },
       ],
     },
@@ -38,9 +54,11 @@ function createHorizontalBarChart(canvas: HTMLCanvasElement, data: IngresosEgres
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
+      animation: { duration: 700, easing: 'easeOutQuart' },
       plugins: {
         legend: { display: false },
         tooltip: {
+          ...TOOLTIP_STYLE,
           callbacks: {
             label: (item) => {
               const v = item.parsed.x ?? 0;
@@ -54,7 +72,7 @@ function createHorizontalBarChart(canvas: HTMLCanvasElement, data: IngresosEgres
         y: {
           grid: { display: false },
           border: { display: false },
-          ticks: { font: { weight: 'bold' as const, size: 12 }, color: '#4B5563' },
+          ticks: { font: { weight: 'bold' as const, size: 14 }, color: '#374151' },
         },
       },
     },
@@ -181,17 +199,31 @@ export function useInformes() {
           {
             data: [Ingresos, Egresos],
             backgroundColor: [...BAR_COLORS],
-            borderWidth: 0,
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            spacing: 2,
           },
         ],
       },
       options: {
-        cutout: '65%',
+        cutout: '70%',
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 600, easing: 'easeOutQuart' },
         plugins: {
           legend: { display: false },
           tooltip: {
+            backgroundColor: TOOLTIP_STYLE.backgroundColor,
+            titleColor: TOOLTIP_STYLE.titleColor,
+            bodyColor: TOOLTIP_STYLE.bodyColor,
+            borderColor: TOOLTIP_STYLE.borderColor,
+            borderWidth: TOOLTIP_STYLE.borderWidth,
+            cornerRadius: TOOLTIP_STYLE.cornerRadius,
+            padding: TOOLTIP_STYLE.padding,
+            titleFont: TOOLTIP_STYLE.titleFont,
+            bodyFont: TOOLTIP_STYLE.bodyFont,
+            displayColors: TOOLTIP_STYLE.displayColors,
+            boxPadding: TOOLTIP_STYLE.boxPadding,
             callbacks: {
               label: (tooltipItem) => {
                 const values = tooltipItem.dataset.data as number[];

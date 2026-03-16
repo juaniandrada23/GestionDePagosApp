@@ -52,13 +52,12 @@ const DashboardPage: React.FC = () => {
     ultimosPagos,
   } = useDashboard();
 
-  const currentYear = new Date().getFullYear();
-  const chartSubtitle = filterMode === 'filtered' ? appliedLabel : `Año ${currentYear}`;
-  const staticSubtitle = `Año ${currentYear}`;
+  const chartSubtitle = filterMode === 'filtered' ? appliedLabel : `Año ${añoFiltrado}`;
+  const staticSubtitle = `Año ${new Date().getFullYear()}`;
 
   return (
     <PageLayout>
-      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-5">
+      <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <div>
             <h1 className="text-xl font-bold text-gray-800">Bienvenido, {userName}</h1>
@@ -91,7 +90,7 @@ const DashboardPage: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-emerald-500 p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Balance del Mes
@@ -118,7 +117,7 @@ const DashboardPage: React.FC = () => {
             <p className="text-xs text-gray-400 mt-1">Ingresos - Egresos</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-emerald-500 p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Ingresos del Mes
@@ -131,7 +130,7 @@ const DashboardPage: React.FC = () => {
             <p className="text-xs text-gray-400 mt-1">Cobros del mes actual</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-orange-500 p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Egresos del Mes
@@ -144,7 +143,7 @@ const DashboardPage: React.FC = () => {
             <p className="text-xs text-gray-400 mt-1">Pagos del mes actual</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-[#006989] p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Dólar Blue
@@ -219,7 +218,7 @@ const DashboardPage: React.FC = () => {
           </div>
         </CollapsibleSection>
 
-        {filterMode === 'filtered' && (
+        {appliedLabel && (
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm text-gray-500">Filtros aplicados:</span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#006989]/10 text-[#006989] text-sm font-medium rounded-full">
@@ -239,6 +238,7 @@ const DashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#006989]" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Cantidad de pagos</h3>
               <p className="text-xs text-gray-400 mt-0.5">{chartSubtitle}</p>
@@ -258,6 +258,7 @@ const DashboardPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#006989]" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Ingresos y Egresos</h3>
               <p className="text-xs text-gray-400 mt-0.5">{chartSubtitle}</p>
@@ -279,6 +280,7 @@ const DashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#006989]" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Rentabilidad Mensual</h3>
               <p className="text-xs text-gray-400 mt-0.5">
@@ -300,6 +302,7 @@ const DashboardPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#006989]" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Medios de Pago</h3>
               <p className="text-xs text-gray-400 mt-0.5">{staticSubtitle}</p>
@@ -339,6 +342,7 @@ const DashboardPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="h-1 bg-[#006989]" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Últimos Pagos</h3>
               <p className="text-xs text-gray-400 mt-0.5">Actividad reciente</p>
@@ -352,7 +356,10 @@ const DashboardPage: React.FC = () => {
               ) : (
                 <div className="divide-y divide-gray-100">
                   {ultimosPagos.map((p) => (
-                    <div key={p.idPago} className="flex items-center gap-3 py-3">
+                    <div
+                      key={p.idPago}
+                      className="flex items-center gap-3 py-3 px-2 -mx-2 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
                       <div
                         className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 ${
                           p.monto >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'

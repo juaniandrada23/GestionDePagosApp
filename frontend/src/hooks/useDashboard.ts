@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Chart from 'chart.js/auto';
+import type { TooltipOptions } from 'chart.js';
 import { principalService } from '@/services/principal.service';
 
 interface ChartCanvas extends HTMLCanvasElement {
@@ -20,6 +21,20 @@ import type {
 type FilterMode = 'year' | 'filtered';
 
 const DONUT_COLORS = ['#006989', '#FF5714', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6366F1'];
+
+const TOOLTIP_STYLE: Partial<TooltipOptions> = {
+  backgroundColor: 'rgba(17, 24, 39, 0.88)',
+  titleColor: '#F9FAFB',
+  bodyColor: '#E5E7EB',
+  borderColor: 'rgba(255, 255, 255, 0.08)',
+  borderWidth: 1,
+  cornerRadius: 8,
+  padding: 10,
+  titleFont: { size: 13, weight: 'bold' },
+  bodyFont: { size: 12 },
+  displayColors: true,
+  boxPadding: 4,
+};
 
 const fmtDateLabel = (fecha: string) => {
   const parts = fecha.split('T')[0].split('-');
@@ -107,6 +122,7 @@ export function useDashboard() {
 
     if (labels.length === 0) return;
 
+    const manyPoints = labels.length > 20;
     const ctx = chart1Ref.current.getContext('2d')!;
     canvas.chart = new Chart(ctx, {
       type: 'bar',
@@ -116,28 +132,37 @@ export function useDashboard() {
           {
             label: 'Cantidad de pagos',
             data: datos,
-            backgroundColor: 'rgba(0, 105, 137, 0.7)',
-            hoverBackgroundColor: 'rgba(0, 78, 102, 0.9)',
-            borderColor: '#004E66',
-            borderWidth: 1,
-            borderRadius: 4,
+            backgroundColor: '#006989',
+            hoverBackgroundColor: '#004E66',
+            borderWidth: 0,
+            borderRadius: manyPoints ? 2 : 6,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 800, easing: 'easeOutQuart' },
         scales: {
-          x: { grid: { display: false } },
+          x: {
+            grid: { display: false },
+            ticks: {
+              color: '#4B5563',
+              font: { size: 12, weight: 'bold' },
+              maxRotation: 45,
+              maxTicksLimit: 15,
+            },
+          },
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.06)' },
-            ticks: { precision: 0 },
+            grid: { color: 'rgba(0, 0, 0, 0.08)' },
+            ticks: { precision: 0, color: '#4B5563', font: { size: 12 } },
           },
         },
         plugins: {
           legend: { display: false },
           tooltip: {
+            ...TOOLTIP_STYLE,
             callbacks: {
               label: (context) =>
                 `${context.dataset.label}: ${(context.parsed.y ?? 0).toLocaleString()}`,
@@ -170,7 +195,12 @@ export function useDashboard() {
     if (fecha.length === 0) return;
 
     const useBar = fecha.length <= 4;
+    const manyPoints = fecha.length > 20;
+    const ptRadius = manyPoints ? 2 : 5;
+    const ptHoverRadius = manyPoints ? 5 : 7;
+    const lineWidth = manyPoints ? 2 : 3;
     const ctx = chart2Ref.current.getContext('2d')!;
+
     canvas.chart = new Chart(ctx, {
       type: useBar ? 'bar' : 'line',
       data: {
@@ -180,20 +210,22 @@ export function useDashboard() {
             ? {
                 label: 'Ingresos',
                 data: ingresos,
-                backgroundColor: 'rgba(0, 105, 137, 0.7)',
-                hoverBackgroundColor: 'rgba(0, 78, 102, 0.9)',
-                borderColor: '#004E66',
-                borderWidth: 1,
-                borderRadius: 4,
+                backgroundColor: '#006989',
+                hoverBackgroundColor: '#004E66',
+                borderWidth: 0,
+                borderRadius: 6,
               }
             : {
                 label: 'Ingresos',
                 data: ingresos,
-                backgroundColor: 'rgba(0, 105, 137, 0.1)',
+                backgroundColor: 'rgba(0, 105, 137, 0.15)',
                 borderColor: '#006989',
-                borderWidth: 2,
-                pointBackgroundColor: '#4BA3C3',
-                pointBorderColor: '#004E66',
+                borderWidth: lineWidth,
+                pointBackgroundColor: '#006989',
+                pointBorderColor: '#fff',
+                pointBorderWidth: manyPoints ? 1 : 2,
+                pointRadius: ptRadius,
+                pointHoverRadius: ptHoverRadius,
                 tension: 0.3,
                 fill: true,
               },
@@ -201,20 +233,22 @@ export function useDashboard() {
             ? {
                 label: 'Egresos',
                 data: egresos,
-                backgroundColor: 'rgba(255, 87, 20, 0.7)',
-                hoverBackgroundColor: 'rgba(255, 87, 20, 0.9)',
-                borderColor: '#CC4610',
-                borderWidth: 1,
-                borderRadius: 4,
+                backgroundColor: '#FF5714',
+                hoverBackgroundColor: '#CC4610',
+                borderWidth: 0,
+                borderRadius: 6,
               }
             : {
                 label: 'Egresos',
                 data: egresos,
-                backgroundColor: 'rgba(255, 87, 20, 0.1)',
+                backgroundColor: 'rgba(255, 87, 20, 0.15)',
                 borderColor: '#FF5714',
-                borderWidth: 2,
-                pointBackgroundColor: '#FF8A5C',
-                pointBorderColor: '#CC4610',
+                borderWidth: lineWidth,
+                pointBackgroundColor: '#FF5714',
+                pointBorderColor: '#fff',
+                pointBorderWidth: manyPoints ? 1 : 2,
+                pointRadius: ptRadius,
+                pointHoverRadius: ptHoverRadius,
                 tension: 0.3,
                 fill: true,
               },
@@ -223,17 +257,37 @@ export function useDashboard() {
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 800, easing: 'easeOutQuart' },
         scales: {
-          x: { grid: { display: false } },
+          x: {
+            grid: { display: false },
+            ticks: {
+              color: '#4B5563',
+              font: { size: 12, weight: 'bold' },
+              maxRotation: 45,
+              maxTicksLimit: 15,
+            },
+          },
           y: {
             beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.06)' },
-            ticks: { precision: 0 },
+            grid: { color: 'rgba(0, 0, 0, 0.08)' },
+            ticks: { precision: 0, color: '#4B5563', font: { size: 12 } },
           },
         },
         plugins: {
-          legend: { display: true, position: 'top' },
+          legend: {
+            display: true,
+            position: 'top',
+            labels: {
+              usePointStyle: true,
+              pointStyle: 'circle',
+              padding: 16,
+              color: '#374151',
+              font: { size: 13, weight: 'bold' },
+            },
+          },
           tooltip: {
+            ...TOOLTIP_STYLE,
             callbacks: {
               label: (context) =>
                 `${context.dataset.label}: $${(context.parsed.y ?? 0).toLocaleString('es-AR')}`,
@@ -258,18 +312,32 @@ export function useDashboard() {
           {
             data: mediosDePago.map((m) => Number(m.total)),
             backgroundColor: DONUT_COLORS.slice(0, mediosDePago.length),
-            borderWidth: 0,
-            hoverOffset: 6,
+            borderWidth: 2,
+            borderColor: '#ffffff',
+            spacing: 2,
+            hoverOffset: 10,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        cutout: '65%',
+        cutout: '70%',
+        animation: { duration: 600, easing: 'easeOutQuart' },
         plugins: {
           legend: { display: false },
           tooltip: {
+            backgroundColor: TOOLTIP_STYLE.backgroundColor,
+            titleColor: TOOLTIP_STYLE.titleColor,
+            bodyColor: TOOLTIP_STYLE.bodyColor,
+            borderColor: TOOLTIP_STYLE.borderColor,
+            borderWidth: TOOLTIP_STYLE.borderWidth,
+            cornerRadius: TOOLTIP_STYLE.cornerRadius,
+            padding: TOOLTIP_STYLE.padding,
+            titleFont: TOOLTIP_STYLE.titleFont,
+            bodyFont: TOOLTIP_STYLE.bodyFont,
+            displayColors: TOOLTIP_STYLE.displayColors,
+            boxPadding: TOOLTIP_STYLE.boxPadding,
             callbacks: {
               label: (context) => {
                 const total = (context.dataset.data as number[]).reduce((a, b) => a + b, 0);
@@ -300,26 +368,27 @@ export function useDashboard() {
           {
             label: 'Ganancia neta',
             data: profits,
-            backgroundColor: profits.map((v) =>
-              v >= 0 ? 'rgba(16, 185, 129, 0.7)' : 'rgba(239, 68, 68, 0.7)',
-            ),
-            hoverBackgroundColor: profits.map((v) =>
-              v >= 0 ? 'rgba(5, 150, 105, 0.9)' : 'rgba(220, 38, 38, 0.9)',
-            ),
-            borderColor: profits.map((v) => (v >= 0 ? '#059669' : '#DC2626')),
-            borderWidth: 1,
-            borderRadius: 4,
+            backgroundColor: profits.map((v) => (v >= 0 ? '#10B981' : '#EF4444')),
+            hoverBackgroundColor: profits.map((v) => (v >= 0 ? '#059669' : '#DC2626')),
+            borderWidth: 0,
+            borderRadius: 6,
           },
         ],
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 800, easing: 'easeOutQuart' },
         scales: {
-          x: { grid: { display: false } },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#4B5563', font: { size: 12, weight: 'bold' } },
+          },
           y: {
-            grid: { color: 'rgba(0, 0, 0, 0.06)' },
+            grid: { color: 'rgba(0, 0, 0, 0.08)' },
             ticks: {
+              color: '#4B5563',
+              font: { size: 12 },
               callback: (value) => `$${Number(value).toLocaleString('es-AR')}`,
             },
           },
@@ -327,6 +396,7 @@ export function useDashboard() {
         plugins: {
           legend: { display: false },
           tooltip: {
+            ...TOOLTIP_STYLE,
             callbacks: {
               label: (context) => {
                 const val = context.parsed.y ?? 0;
@@ -367,25 +437,45 @@ export function useDashboard() {
     }
 
     setIsLoading(true);
-    principalService
-      .filtrarDashboard(desde, hasta)
-      .then((result) => {
-        setPagosFiltrados(result.pagos);
-        setIngresosEgresosFiltrados(result.ingresosEgresos);
-        setCantidadDePagos(result.totalPagos);
-        setFilterMode('filtered');
-        setAppliedLabel(
-          usedYear
-            ? `Año: ${añoFiltrado}`
-            : `${desde.split('-').reverse().join('/')} — ${hasta.split('-').reverse().join('/')}`,
-        );
-        setError('');
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setError('Error de conexion con el servidor, intente nuevamente');
-        setIsLoading(false);
-      });
+
+    if (usedYear) {
+      Promise.all([
+        principalService.obtenerPagosPorAnioFiltrado(añoFiltrado),
+        principalService.obtenerIngresosEgresosPorAnioFiltrado(añoFiltrado),
+        principalService.obtenerTotalPagoFiltradoPorAnio(añoFiltrado),
+      ])
+        .then(([pagosAnio, ieAnio, totalArr]) => {
+          setPagosPorAño(pagosAnio);
+          setIngresosEgresosAnio(ieAnio);
+          setCantidadDePagos(totalArr.length > 0 ? totalArr[0].totalPagos : 0);
+          setFilterMode('year');
+          setAppliedLabel(`Año: ${añoFiltrado}`);
+          setError('');
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setError('Error de conexion con el servidor, intente nuevamente');
+          setIsLoading(false);
+        });
+    } else {
+      principalService
+        .filtrarDashboard(desde, hasta)
+        .then((result) => {
+          setPagosFiltrados(result.pagos);
+          setIngresosEgresosFiltrados(result.ingresosEgresos);
+          setCantidadDePagos(result.totalPagos);
+          setFilterMode('filtered');
+          setAppliedLabel(
+            `${desde.split('-').reverse().join('/')} — ${hasta.split('-').reverse().join('/')}`,
+          );
+          setError('');
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setError('Error de conexion con el servidor, intente nuevamente');
+          setIsLoading(false);
+        });
+    }
   }, [fechadesde, fechahasta, añoFiltrado]);
 
   const resetFilters = useCallback(() => {
@@ -393,6 +483,7 @@ export function useDashboard() {
     setFechaHasta('');
     setAñoFiltrado(new Date().getFullYear().toString());
     setError('');
+    setAppliedLabel('');
     setFilterMode('year');
 
     principalService

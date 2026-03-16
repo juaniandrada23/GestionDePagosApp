@@ -27,7 +27,7 @@ class ApiClient {
     localStorage.removeItem('imagen');
     localStorage.removeItem('empresaId');
     localStorage.removeItem('empresaNombre');
-    window.location.href = '/';
+    window.dispatchEvent(new CustomEvent('auth:expired'));
   }
 
   private async tryRefresh(): Promise<boolean> {
@@ -172,6 +172,10 @@ class ApiClient {
         body: formData,
       });
     });
+  }
+
+  async refreshToken(): Promise<boolean> {
+    return this.tryRefresh();
   }
 
   async getRaw(path: string): Promise<Response> {

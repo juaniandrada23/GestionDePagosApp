@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { Pago, PagoForm, CompraForm, VentaForm } from '@/types/pago';
 
 export const pagosService = {

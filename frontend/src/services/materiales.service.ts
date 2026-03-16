@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { Material, MovimientoStock, CategoriaMaterial, Unidad } from '@/types/material';
 
 export const materialesService = {

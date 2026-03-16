@@ -4,5 +4,7 @@ npm-debug.log
 .env
 .env.*
 *.md
+Dockerfile*
+docker-compose.yml
 build
 dist

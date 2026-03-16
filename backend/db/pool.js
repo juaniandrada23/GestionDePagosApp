@@ -4,7 +4,9 @@ const config = require('../config');
 
 const tenantContext = new AsyncLocalStorage();
 
-const adminPool = new Pool(config.db);
+const sslConfig = config.isProd ? { ssl: { rejectUnauthorized: true } } : {};
+
+const adminPool = new Pool({ ...config.db, ...sslConfig });
 
 const appPool = new Pool({
   host: config.db.host,
@@ -15,6 +17,7 @@ const appPool = new Pool({
   max: config.db.max,
   idleTimeoutMillis: config.db.idleTimeoutMillis,
   connectionTimeoutMillis: config.db.connectionTimeoutMillis,
+  ...sslConfig,
 });
 
 const query = async (text, params) => {

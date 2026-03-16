@@ -266,7 +266,7 @@ const ComprasPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={cargandoForm}
-                  className="w-full py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-lg hover:bg-[#053F61] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-lg hover:bg-[#053F61] shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {cargandoForm ? (
                     <>
@@ -289,7 +289,7 @@ const ComprasPage: React.FC = () => {
             >
               <table className="w-full">
                 <thead>
-                  <tr className="bg-gray-50/80 border-b border-gray-200">
+                  <tr className="bg-gray-50 border-b border-gray-200">
                     <th className={TH_CLASS}>Proveedor</th>
                     <th className={`${TH_CLASS} text-right`}>Monto</th>
                     <th className={`${TH_CLASS} text-right`}>Monto USD</th>
@@ -314,7 +314,7 @@ const ComprasPage: React.FC = () => {
                     </tr>
                   ) : (
                     paginatedPagos.map((pago) => (
-                      <tr key={pago.idPago} className="hover:bg-gray-50/60 transition-colors">
+                      <tr key={pago.idPago} className="hover:bg-gray-50 transition-colors">
                         <td className="px-4 py-3 text-sm font-medium text-gray-800 whitespace-nowrap">
                           {pago.nombre}
                         </td>

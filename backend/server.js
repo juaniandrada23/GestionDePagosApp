@@ -36,22 +36,22 @@ const generalLimiter = rateLimit({
 });
 
 app.get('/health', generalLimiter, (req, res) => res.json({ status: 'ok' }));
-app.use('/login', authLimiter, require('./Routes/login'));
-app.use('/register', authLimiter, require('./Routes/register'));
+app.use('/login', authLimiter, require('./routes/login'));
+app.use('/register', authLimiter, require('./routes/register'));
 
 app.use(auth);
 const setTenantContext = require('./middleware/tenantContext');
 app.use(setTenantContext);
 app.use(generalLimiter);
-app.use('/proveedores', require('./Routes/proveedores'));
-app.use('/pagos', require('./Routes/pagos'));
-app.use('/calculos', require('./Routes/calculos'));
-app.use('/usuarios', require('./Routes/usuarios'));
-app.use('/mediodepago', require('./Routes/mediodepago'));
-app.use('/principal', require('./Routes/principal'));
-app.use('/materiales', require('./Routes/materiales'));
-app.use('/clientes', require('./Routes/clientes'));
-app.use('/presupuestos', require('./Routes/presupuestos'));
+app.use('/proveedores', require('./routes/proveedores'));
+app.use('/pagos', require('./routes/pagos'));
+app.use('/calculos', require('./routes/calculos'));
+app.use('/usuarios', require('./routes/usuarios'));
+app.use('/mediodepago', require('./routes/mediodepago'));
+app.use('/principal', require('./routes/principal'));
+app.use('/materiales', require('./routes/materiales'));
+app.use('/clientes', require('./routes/clientes'));
+app.use('/presupuestos', require('./routes/presupuestos'));
 
 app.use(errorHandler);
 

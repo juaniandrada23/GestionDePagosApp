@@ -22,14 +22,4 @@ const buscarPorId = async (id) => {
   return rows[0] || null;
 };
 
-const actualizar = async (id, data) => {
-  const { rows } = await pool.query(
-    `UPDATE empresas SET nombre = $1, direccion = $2, telefono = $3, email = $4,
-     logo = $5, cuit = $6, rubro = $7, updated_at = NOW()
-     WHERE id = $8 RETURNING *`,
-    [data.nombre, data.direccion, data.telefono, data.email, data.logo, data.cuit, data.rubro, id],
-  );
-  return rows[0] || null;
-};
-
-module.exports = { crear, buscarPorId, actualizar };
+module.exports = { crear, buscarPorId };

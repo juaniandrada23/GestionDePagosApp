@@ -1,4 +1,4 @@
-import { apiClient } from './api-client';
+import { apiClient } from './apiClient';
 import type { Proveedor, ProveedorNombre, ProveedorForm } from '@/types/proveedor';
 
 export const proveedoresService = {
