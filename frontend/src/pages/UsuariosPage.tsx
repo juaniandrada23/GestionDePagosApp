@@ -1,5 +1,4 @@
 import React from 'react';
-import Skeleton from '@mui/material/Skeleton';
 import { FiUserPlus, FiUsers } from 'react-icons/fi';
 import { MdDeleteOutline, MdPersonOutline } from 'react-icons/md';
 import PageLayout from '@/components/layout/PageLayout';
@@ -42,7 +41,7 @@ const UsuariosPage: React.FC = () => {
           className={`bg-white rounded-xl shadow-sm border border-gray-200 p-5 sm:p-6 ${!isAdmin ? 'max-w-md mx-auto' : ''}`}
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-[#006989]/10 flex items-center justify-center flex-shrink-0">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-primary-500/10 flex items-center justify-center flex-shrink-0">
               {imagenUsuario ? (
                 <img
                   className="w-full h-full object-cover"
@@ -50,7 +49,7 @@ const UsuariosPage: React.FC = () => {
                   alt={user?.name || 'Usuario'}
                 />
               ) : (
-                <span className="text-2xl font-bold text-[#006989]">
+                <span className="text-2xl font-bold text-primary-500">
                   {user?.name?.charAt(0)?.toUpperCase() || '?'}
                 </span>
               )}
@@ -59,7 +58,7 @@ const UsuariosPage: React.FC = () => {
             <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h1 className="text-lg font-bold text-gray-900">{user?.name}</h1>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#006989]/10 text-[#006989] mt-0.5">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-500/10 text-primary-500 mt-0.5">
                   <MdPersonOutline className="text-sm" />
                   {user?.role}
                 </span>
@@ -70,7 +69,7 @@ const UsuariosPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setModalOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white rounded-lg bg-[#006989] hover:bg-[#053F61] transition-colors"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white rounded-lg bg-primary-500 hover:bg-primary-600 transition-colors"
                   >
                     <FiUserPlus className="text-[15px]" /> Agregar usuario
                   </button>
@@ -84,8 +83,8 @@ const UsuariosPage: React.FC = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#006989]/10 flex items-center justify-center">
-                  <FiUsers className="text-sm text-[#006989]" />
+                <div className="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                  <FiUsers className="text-sm text-primary-500" />
                 </div>
                 <h2 className="text-base font-bold text-gray-900">Usuarios registrados</h2>
               </div>
@@ -97,17 +96,15 @@ const UsuariosPage: React.FC = () => {
             {isLoadingSkeleton ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
                 {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="bg-white rounded-xl border border-gray-200 p-4">
+                  <div
+                    key={i}
+                    className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse"
+                  >
                     <div className="flex items-center gap-3">
-                      <Skeleton
-                        variant="rounded"
-                        width={40}
-                        height={40}
-                        sx={{ borderRadius: '10px' }}
-                      />
+                      <div className="w-10 h-10 bg-gray-200 rounded-xl" />
                       <div className="flex-1 space-y-1.5">
-                        <Skeleton variant="rounded" width="55%" height={14} />
-                        <Skeleton variant="rounded" width="35%" height={11} />
+                        <div className="h-3.5 bg-gray-200 rounded w-1/2" />
+                        <div className="h-2.5 bg-gray-200 rounded w-1/3" />
                       </div>
                     </div>
                   </div>
@@ -128,7 +125,7 @@ const UsuariosPage: React.FC = () => {
                     className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all"
                   >
                     <div className="flex items-start gap-3">
-                      <div className="w-10 h-10 rounded-xl overflow-hidden bg-[#006989]/10 flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 rounded-xl overflow-hidden bg-primary-500/10 flex items-center justify-center flex-shrink-0">
                         {u.imagen ? (
                           <img
                             className="w-full h-full object-cover"
@@ -136,7 +133,7 @@ const UsuariosPage: React.FC = () => {
                             alt={u.username}
                           />
                         ) : (
-                          <span className="text-sm font-bold text-[#006989]">
+                          <span className="text-sm font-bold text-primary-500">
                             {u.username?.charAt(0)?.toUpperCase() || '?'}
                           </span>
                         )}
@@ -186,7 +183,7 @@ const UsuariosPage: React.FC = () => {
       <FormDialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        icon={<FiUserPlus className="text-xl text-[#006989]" />}
+        icon={<FiUserPlus className="text-xl text-primary-500" />}
         title="Agregar usuario"
         subtitle="Crear una nueva cuenta de usuario"
         onSubmit={handleAceptarClick}
@@ -200,7 +197,7 @@ const UsuariosPage: React.FC = () => {
             value={nuevoUsuario.nombre}
             onChange={handleNuevoUsuarioChange}
             autoFocus
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none transition"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition"
           />
         </FormField>
         <FormField label="Contraseña">
@@ -209,7 +206,7 @@ const UsuariosPage: React.FC = () => {
             name="contraseña"
             value={nuevoUsuario.contraseña}
             onChange={handleNuevoUsuarioChange}
-            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none transition"
+            className="w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition"
           />
         </FormField>
       </FormDialog>

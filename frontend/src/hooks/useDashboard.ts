@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Chart from 'chart.js/auto';
-import type { TooltipOptions } from 'chart.js';
 import { principalService } from '@/services/principal.service';
+import { CHART_COLORS, DONUT_COLORS, TOOLTIP_STYLE, AXIS_STYLE } from '@/config/chartTheme';
 
 interface ChartCanvas extends HTMLCanvasElement {
   chart?: Chart;
@@ -19,22 +19,6 @@ import type {
 } from '@/types/principal';
 
 type FilterMode = 'year' | 'filtered';
-
-const DONUT_COLORS = ['#006989', '#FF5714', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6366F1'];
-
-const TOOLTIP_STYLE: Partial<TooltipOptions> = {
-  backgroundColor: 'rgba(17, 24, 39, 0.88)',
-  titleColor: '#F9FAFB',
-  bodyColor: '#E5E7EB',
-  borderColor: 'rgba(255, 255, 255, 0.08)',
-  borderWidth: 1,
-  cornerRadius: 8,
-  padding: 10,
-  titleFont: { size: 13, weight: 'bold' },
-  bodyFont: { size: 12 },
-  displayColors: true,
-  boxPadding: 4,
-};
 
 const fmtDateLabel = (fecha: string) => {
   const parts = fecha.split('T')[0].split('-');
@@ -132,8 +116,8 @@ export function useDashboard() {
           {
             label: 'Cantidad de pagos',
             data: datos,
-            backgroundColor: '#006989',
-            hoverBackgroundColor: '#004E66',
+            backgroundColor: CHART_COLORS.primary,
+            hoverBackgroundColor: CHART_COLORS.primaryHover,
             borderWidth: 0,
             borderRadius: manyPoints ? 2 : 6,
           },
@@ -143,22 +127,7 @@ export function useDashboard() {
         responsive: true,
         maintainAspectRatio: false,
         animation: { duration: 800, easing: 'easeOutQuart' },
-        scales: {
-          x: {
-            grid: { display: false },
-            ticks: {
-              color: '#4B5563',
-              font: { size: 12, weight: 'bold' },
-              maxRotation: 45,
-              maxTicksLimit: 15,
-            },
-          },
-          y: {
-            beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.08)' },
-            ticks: { precision: 0, color: '#4B5563', font: { size: 12 } },
-          },
-        },
+        scales: { ...AXIS_STYLE },
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -210,18 +179,18 @@ export function useDashboard() {
             ? {
                 label: 'Ingresos',
                 data: ingresos,
-                backgroundColor: '#006989',
-                hoverBackgroundColor: '#004E66',
+                backgroundColor: CHART_COLORS.primary,
+                hoverBackgroundColor: CHART_COLORS.primaryHover,
                 borderWidth: 0,
                 borderRadius: 6,
               }
             : {
                 label: 'Ingresos',
                 data: ingresos,
-                backgroundColor: 'rgba(0, 105, 137, 0.15)',
-                borderColor: '#006989',
+                backgroundColor: CHART_COLORS.primaryFill,
+                borderColor: CHART_COLORS.primary,
                 borderWidth: lineWidth,
-                pointBackgroundColor: '#006989',
+                pointBackgroundColor: CHART_COLORS.primary,
                 pointBorderColor: '#fff',
                 pointBorderWidth: manyPoints ? 1 : 2,
                 pointRadius: ptRadius,
@@ -233,18 +202,18 @@ export function useDashboard() {
             ? {
                 label: 'Egresos',
                 data: egresos,
-                backgroundColor: '#FF5714',
-                hoverBackgroundColor: '#CC4610',
+                backgroundColor: CHART_COLORS.accent,
+                hoverBackgroundColor: CHART_COLORS.accentHover,
                 borderWidth: 0,
                 borderRadius: 6,
               }
             : {
                 label: 'Egresos',
                 data: egresos,
-                backgroundColor: 'rgba(255, 87, 20, 0.15)',
-                borderColor: '#FF5714',
+                backgroundColor: CHART_COLORS.accentFill,
+                borderColor: CHART_COLORS.accent,
                 borderWidth: lineWidth,
-                pointBackgroundColor: '#FF5714',
+                pointBackgroundColor: CHART_COLORS.accent,
                 pointBorderColor: '#fff',
                 pointBorderWidth: manyPoints ? 1 : 2,
                 pointRadius: ptRadius,
@@ -258,22 +227,7 @@ export function useDashboard() {
         responsive: true,
         maintainAspectRatio: false,
         animation: { duration: 800, easing: 'easeOutQuart' },
-        scales: {
-          x: {
-            grid: { display: false },
-            ticks: {
-              color: '#4B5563',
-              font: { size: 12, weight: 'bold' },
-              maxRotation: 45,
-              maxTicksLimit: 15,
-            },
-          },
-          y: {
-            beginAtZero: true,
-            grid: { color: 'rgba(0, 0, 0, 0.08)' },
-            ticks: { precision: 0, color: '#4B5563', font: { size: 12 } },
-          },
-        },
+        scales: { ...AXIS_STYLE },
         plugins: {
           legend: {
             display: true,
@@ -304,14 +258,14 @@ export function useDashboard() {
     if (canvas.chart) canvas.chart.destroy();
 
     const ctx = chart3Ref.current.getContext('2d')!;
-    canvas.chart = new Chart(ctx, {
+    canvas.chart = new Chart<'doughnut'>(ctx, {
       type: 'doughnut',
       data: {
         labels: mediosDePago.map((m) => m.nombre),
         datasets: [
           {
             data: mediosDePago.map((m) => Number(m.total)),
-            backgroundColor: DONUT_COLORS.slice(0, mediosDePago.length),
+            backgroundColor: [...DONUT_COLORS.slice(0, mediosDePago.length)],
             borderWidth: 2,
             borderColor: '#ffffff',
             spacing: 2,
@@ -327,17 +281,7 @@ export function useDashboard() {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: TOOLTIP_STYLE.backgroundColor,
-            titleColor: TOOLTIP_STYLE.titleColor,
-            bodyColor: TOOLTIP_STYLE.bodyColor,
-            borderColor: TOOLTIP_STYLE.borderColor,
-            borderWidth: TOOLTIP_STYLE.borderWidth,
-            cornerRadius: TOOLTIP_STYLE.cornerRadius,
-            padding: TOOLTIP_STYLE.padding,
-            titleFont: TOOLTIP_STYLE.titleFont,
-            bodyFont: TOOLTIP_STYLE.bodyFont,
-            displayColors: TOOLTIP_STYLE.displayColors,
-            boxPadding: TOOLTIP_STYLE.boxPadding,
+            ...TOOLTIP_STYLE,
             callbacks: {
               label: (context) => {
                 const total = (context.dataset.data as number[]).reduce((a, b) => a + b, 0);
@@ -368,8 +312,10 @@ export function useDashboard() {
           {
             label: 'Ganancia neta',
             data: profits,
-            backgroundColor: profits.map((v) => (v >= 0 ? '#10B981' : '#EF4444')),
-            hoverBackgroundColor: profits.map((v) => (v >= 0 ? '#059669' : '#DC2626')),
+            backgroundColor: profits.map((v) => (v >= 0 ? CHART_COLORS.emerald : CHART_COLORS.red)),
+            hoverBackgroundColor: profits.map((v) =>
+              v >= 0 ? CHART_COLORS.emeraldHover : CHART_COLORS.redHover,
+            ),
             borderWidth: 0,
             borderRadius: 6,
           },
@@ -380,15 +326,11 @@ export function useDashboard() {
         maintainAspectRatio: false,
         animation: { duration: 800, easing: 'easeOutQuart' },
         scales: {
-          x: {
-            grid: { display: false },
-            ticks: { color: '#4B5563', font: { size: 12, weight: 'bold' } },
-          },
+          x: { ...AXIS_STYLE.x },
           y: {
-            grid: { color: 'rgba(0, 0, 0, 0.08)' },
+            ...AXIS_STYLE.y,
             ticks: {
-              color: '#4B5563',
-              font: { size: 12 },
+              ...AXIS_STYLE.y.ticks,
               callback: (value) => `$${Number(value).toLocaleString('es-AR')}`,
             },
           },

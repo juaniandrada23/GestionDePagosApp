@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { MdClose, MdErrorOutline } from 'react-icons/md';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Spinner } from '@/components/shared/Modal';
 import { FiUser, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
 import EstadoServicio from '@/components/feedback/EstadoServicio';
 import LoadingModal from '@/components/feedback/LoadingModal';
@@ -79,7 +79,7 @@ const LoginPage: React.FC = () => {
           backgroundPosition: 'center',
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#003040]/90 via-[#004E66]/60 to-[#006989]/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-800/90 via-primary-700/60 to-primary-500/30" />
 
         <div className="relative z-10 px-12 pb-14 max-w-lg">
           <div className="w-11 h-11 rounded-lg bg-white/15 backdrop-blur-sm flex items-center justify-center mb-5 border border-white/20">
@@ -93,16 +93,16 @@ const LoginPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex w-full lg:w-1/2 items-center justify-center bg-[#EAEBED] px-5 py-12">
+      <div className="flex w-full lg:w-1/2 items-center justify-center bg-surface px-5 py-12">
         <div className="w-full max-w-[420px]">
           <div className="flex flex-col items-center mb-10 lg:hidden">
-            <div className="w-14 h-14 rounded-2xl bg-[#006989] flex items-center justify-center mb-4 shadow-lg shadow-[#006989]/20">
+            <div className="w-14 h-14 rounded-2xl bg-primary-500 flex items-center justify-center mb-4 shadow-lg">
               <span className="text-white font-bold text-xl">GP</span>
             </div>
             <h1 className="text-2xl font-bold text-gray-800">Gestion de Pagos</h1>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden animate-fade-in-up">
             <div className="px-7 pt-8 pb-1">
               <h2 className="text-xl font-bold text-gray-800">Bienvenido</h2>
               <p className="text-sm text-gray-400 mt-1">Ingresa tus credenciales para continuar</p>
@@ -134,7 +134,7 @@ const LoginPage: React.FC = () => {
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                      <FiUser className="w-[18px] h-[18px] text-gray-400 group-focus-within:text-[#006989] transition-colors" />
+                      <FiUser className="w-[18px] h-[18px] text-gray-400 group-focus-within:text-primary-500 transition-colors" />
                     </div>
                     <input
                       id="username"
@@ -147,7 +147,7 @@ const LoginPage: React.FC = () => {
                       }}
                       autoFocus
                       autoComplete="username"
-                      className="w-full pl-11 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                      className="w-full pl-11 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                     />
                   </div>
                   {formErrors.username && (
@@ -167,7 +167,7 @@ const LoginPage: React.FC = () => {
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-                      <FiLock className="w-[18px] h-[18px] text-gray-400 group-focus-within:text-[#006989] transition-colors" />
+                      <FiLock className="w-[18px] h-[18px] text-gray-400 group-focus-within:text-primary-500 transition-colors" />
                     </div>
                     <input
                       id="password"
@@ -179,7 +179,7 @@ const LoginPage: React.FC = () => {
                         setFormErrors((prev) => ({ ...prev, password: undefined }));
                       }}
                       autoComplete="current-password"
-                      className="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                      className="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                     />
                     <button
                       type="button"
@@ -206,10 +206,10 @@ const LoginPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-3 bg-[#006989] text-white font-semibold text-sm rounded-xl hover:bg-[#053F61] active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-primary-500 text-white font-semibold text-sm rounded-xl hover:bg-primary-600 active:scale-[0.98] transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
-                      <CircularProgress size={18} color="inherit" />
+                      <Spinner className="h-4.5 w-4.5" />
                     ) : (
                       <>
                         Iniciar sesion <FiArrowRight className="w-4 h-4" />
@@ -222,7 +222,7 @@ const LoginPage: React.FC = () => {
               <div className="text-center mt-4">
                 <Link
                   to="/registro"
-                  className="text-sm font-medium text-[#006989] hover:text-[#053F61] transition-colors"
+                  className="text-sm font-medium text-primary-500 hover:text-primary-600 transition-colors"
                 >
                   ¿No tienes cuenta? Registra tu empresa
                 </Link>

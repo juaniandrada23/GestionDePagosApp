@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Skeleton from '@mui/material/Skeleton';
 import {
   MdAdd,
   MdEdit,
@@ -104,8 +103,8 @@ const PresupuestosPage: React.FC = () => {
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-[#006989]/10 flex items-center justify-center">
-              <FiFileText className="text-lg text-[#006989]" />
+            <div className="w-9 h-9 rounded-lg bg-primary-500/10 flex items-center justify-center">
+              <FiFileText className="text-lg text-primary-500" />
             </div>
             <h1 className="text-lg font-bold text-gray-900">Presupuestos</h1>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
@@ -116,7 +115,7 @@ const PresupuestosPage: React.FC = () => {
             <select
               value={filtroEstado}
               onChange={(e) => setFiltroEstado(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#006989] outline-none bg-white"
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 outline-none bg-white"
             >
               <option value="">Todos los estados</option>
               <option value="borrador">Borrador</option>
@@ -127,7 +126,7 @@ const PresupuestosPage: React.FC = () => {
             <select
               value={filtroCliente}
               onChange={(e) => setFiltroCliente(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#006989] outline-none bg-white"
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 outline-none bg-white"
             >
               <option value="">Todos los clientes</option>
               {nombreclientes.map((c) => (
@@ -143,7 +142,7 @@ const PresupuestosPage: React.FC = () => {
                   setEditPresupuesto(null);
                   setModalCrear(true);
                 }}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white rounded-lg bg-[#006989] hover:bg-[#053F61] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white rounded-lg bg-primary-500 hover:bg-primary-600 transition-colors"
               >
                 <MdAdd className="text-lg" /> Nuevo
               </button>
@@ -154,7 +153,7 @@ const PresupuestosPage: React.FC = () => {
         {isLoading ? (
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
-              <Skeleton key={i} variant="rounded" height={48} sx={{ borderRadius: '8px' }} />
+              <div key={i} className="h-12 bg-gray-200 rounded-lg animate-pulse" />
             ))}
           </div>
         ) : presupuestos.length === 0 ? (
@@ -181,7 +180,7 @@ const PresupuestosPage: React.FC = () => {
                 <tbody className="divide-y divide-gray-100">
                   {presupuestos.map((p) => (
                     <tr key={p.id} className="hover:bg-gray-50/60 transition-colors">
-                      <td className="px-4 py-3 text-sm font-semibold text-[#006989] whitespace-nowrap">
+                      <td className="px-4 py-3 text-sm font-semibold text-primary-500 whitespace-nowrap">
                         #{p.numero}
                       </td>
                       <td className="px-4 py-3 text-sm font-medium text-gray-800 whitespace-nowrap">
@@ -205,7 +204,7 @@ const PresupuestosPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => abrirDetalle(p)}
-                            className="p-1.5 rounded-lg text-[#006989] hover:bg-[#006989]/10 transition-colors"
+                            className="p-1.5 rounded-lg text-primary-500 hover:bg-primary-500/10 transition-colors"
                             title="Ver detalle"
                           >
                             <FiFileText className="w-4 h-4" />
@@ -213,7 +212,7 @@ const PresupuestosPage: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => handlePDF(p.id)}
-                            className="p-1.5 rounded-lg text-[#006989] hover:bg-[#006989]/10 transition-colors"
+                            className="p-1.5 rounded-lg text-primary-500 hover:bg-primary-500/10 transition-colors"
                             title="Generar PDF"
                           >
                             <MdPictureAsPdf className="w-4 h-4" />
@@ -382,7 +381,7 @@ const PresupuestosPage: React.FC = () => {
               )}
               <div className="flex justify-between text-base font-bold">
                 <span className="text-gray-900">Total</span>
-                <span className="text-[#006989]">{formatMonto(detallePresupuesto.total)}</span>
+                <span className="text-primary-500">{formatMonto(detallePresupuesto.total)}</span>
               </div>
             </div>
 
@@ -491,7 +490,7 @@ function PresupuestoFormDialog({
   } = usePresupuestoForm(editPresupuesto);
 
   const inputCls =
-    'w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none';
+    'w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none';
 
   return (
     <>
@@ -565,7 +564,7 @@ function PresupuestoFormDialog({
             <button
               type="button"
               onClick={addItem}
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-[#006989] bg-[#006989]/10 rounded-lg hover:bg-[#006989]/20 transition-colors"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold text-primary-500 bg-primary-500/10 rounded-lg hover:bg-primary-500/20 transition-colors"
             >
               <MdAdd className="text-sm" /> Agregar línea
             </button>
@@ -668,7 +667,7 @@ function PresupuestoFormDialog({
           )}
           <div className="flex justify-between text-base font-bold">
             <span className="text-gray-900">Total</span>
-            <span className="text-[#006989]">{formatMonto(calcularTotal())}</span>
+            <span className="text-primary-500">{formatMonto(calcularTotal())}</span>
           </div>
         </div>
       </Modal>

@@ -1,5 +1,5 @@
-import React from 'react';
-import Snackbar from '@mui/material/Snackbar';
+import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { MdCheckCircle, MdError, MdWarning, MdInfo, MdClose } from 'react-icons/md';
 
 interface AppSnackbarProps {
@@ -32,9 +32,9 @@ const severityConfig = {
   },
   info: {
     icon: MdInfo,
-    iconBg: 'bg-[#006989]/10',
-    iconColor: 'text-[#006989]',
-    border: 'border-l-[#006989]',
+    iconBg: 'bg-primary-500/10',
+    iconColor: 'text-primary-500',
+    border: 'border-l-primary-500',
   },
 };
 
@@ -46,16 +46,19 @@ const AppSnackbar: React.FC<AppSnackbarProps> = ({
   onClose,
   isMobile: _isMobile = false,
 }) => {
+  useEffect(() => {
+    if (!open) return;
+    const timer = setTimeout(onClose, 2500);
+    return () => clearTimeout(timer);
+  }, [open, onClose]);
+
+  if (!open) return null;
+
   const config = severityConfig[severity];
   const Icon = config.icon;
 
-  return (
-    <Snackbar
-      open={open}
-      autoHideDuration={2500}
-      onClose={onClose}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    >
+  return createPortal(
+    <div className="fixed top-4 right-4 z-[60] animate-slide-up">
       <div
         className={`flex items-start gap-3 px-4 py-3 bg-white rounded-xl shadow-lg border border-gray-200 border-l-4 ${config.border} min-w-[300px] max-w-[420px]`}
       >
@@ -76,7 +79,8 @@ const AppSnackbar: React.FC<AppSnackbarProps> = ({
           <MdClose className="text-base" />
         </button>
       </div>
-    </Snackbar>
+    </div>,
+    document.body,
   );
 };
 

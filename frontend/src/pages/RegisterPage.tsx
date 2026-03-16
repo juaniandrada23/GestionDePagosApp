@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Spinner } from '@/components/shared/Modal';
 import { MdErrorOutline } from 'react-icons/md';
 import {
   FiUser,
@@ -43,9 +43,9 @@ const RegisterPage: React.FC = () => {
   const stepLabels = ['Datos Personales', 'Datos Empresa', 'Credenciales'];
 
   const inputClass =
-    'w-full pl-11 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400';
+    'w-full pl-11 pr-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400';
   const iconClass =
-    'w-[18px] h-[18px] text-gray-400 group-focus-within:text-[#006989] transition-colors';
+    'w-[18px] h-[18px] text-gray-400 group-focus-within:text-primary-500 transition-colors';
 
   const fieldError = (field: string) => {
     const err = (formErrors as Record<string, string | undefined>)[field];
@@ -59,10 +59,10 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#EAEBED] px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-surface px-4 py-8">
       <div className="w-full max-w-[520px]">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-14 h-14 rounded-2xl bg-[#006989] flex items-center justify-center mb-4 shadow-lg shadow-[#006989]/20">
+          <div className="w-14 h-14 rounded-2xl bg-primary-500 flex items-center justify-center mb-4 shadow-lg">
             <span className="text-white font-bold text-xl">GP</span>
           </div>
           <h1 className="text-2xl font-bold text-gray-800">Registra tu empresa</h1>
@@ -74,17 +74,19 @@ const RegisterPage: React.FC = () => {
             <div key={label} className="flex items-center gap-2">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
-                  i + 1 <= step ? 'bg-[#006989] text-white' : 'bg-gray-200 text-gray-500'
+                  i + 1 <= step ? 'bg-primary-500 text-white' : 'bg-gray-200 text-gray-500'
                 }`}
               >
-                {i + 1}
+                {i + 1 < step ? '\u2713' : i + 1}
               </div>
               <span
-                className={`text-xs font-medium hidden sm:block ${i + 1 <= step ? 'text-[#006989]' : 'text-gray-400'}`}
+                className={`text-xs font-medium hidden sm:block ${i + 1 <= step ? 'text-primary-500' : 'text-gray-400'}`}
               >
                 {label}
               </span>
-              {i < stepLabels.length - 1 && <div className="w-6 h-px bg-gray-300" />}
+              {i < stepLabels.length - 1 && (
+                <div className={`w-8 h-0.5 ${i + 1 < step ? 'bg-primary-500' : 'bg-gray-300'}`} />
+              )}
             </div>
           ))}
         </div>
@@ -201,7 +203,7 @@ const RegisterPage: React.FC = () => {
                       type="date"
                       value={form.fecha_nacimiento}
                       onChange={(e) => updateField('fecha_nacimiento', e.target.value)}
-                      className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all"
+                      className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all"
                     />
                   </div>
                 </>
@@ -237,7 +239,7 @@ const RegisterPage: React.FC = () => {
                       value={form.empresa_direccion}
                       onChange={(e) => updateField('empresa_direccion', e.target.value)}
                       placeholder="Av. Siempreviva 742"
-                      className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                      className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -284,7 +286,7 @@ const RegisterPage: React.FC = () => {
                         value={form.empresa_cuit}
                         onChange={(e) => updateField('empresa_cuit', e.target.value)}
                         placeholder="20-12345678-9"
-                        className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                        className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                       />
                     </div>
                     <div>
@@ -296,7 +298,7 @@ const RegisterPage: React.FC = () => {
                         value={form.empresa_rubro}
                         onChange={(e) => updateField('empresa_rubro', e.target.value)}
                         placeholder="Construccion"
-                        className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                        className="w-full px-3 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                       />
                     </div>
                   </div>
@@ -339,7 +341,7 @@ const RegisterPage: React.FC = () => {
                         onChange={(e) => updateField('password', e.target.value)}
                         placeholder="Minimo 6 caracteres"
                         autoComplete="new-password"
-                        className="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                        className="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                       />
                       <button
                         type="button"
@@ -370,7 +372,7 @@ const RegisterPage: React.FC = () => {
                         onChange={(e) => updateField('confirmPassword', e.target.value)}
                         placeholder="Repite tu contrasena"
                         autoComplete="new-password"
-                        className="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-[#006989]/20 focus:border-[#006989] outline-none transition-all placeholder:text-gray-400"
+                        className="w-full pl-11 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none transition-all placeholder:text-gray-400"
                       />
                       <button
                         type="button"
@@ -402,7 +404,7 @@ const RegisterPage: React.FC = () => {
                 ) : (
                   <Link
                     to="/"
-                    className="text-sm font-medium text-[#006989] hover:text-[#053F61] transition-colors"
+                    className="text-sm font-medium text-primary-500 hover:text-primary-600 transition-colors"
                   >
                     Ya tengo cuenta
                   </Link>
@@ -412,7 +414,7 @@ const RegisterPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={nextStep}
-                    className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-xl hover:bg-[#053F61] transition-colors"
+                    className="inline-flex items-center gap-1.5 px-5 py-2.5 bg-primary-500 text-white font-semibold text-sm rounded-xl hover:bg-primary-600 transition-colors"
                   >
                     Siguiente <FiArrowRight className="w-4 h-4" />
                   </button>
@@ -421,10 +423,10 @@ const RegisterPage: React.FC = () => {
                     type="button"
                     onClick={handleSubmit}
                     disabled={isLoading}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-xl hover:bg-[#053F61] transition-colors disabled:opacity-50"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-500 text-white font-semibold text-sm rounded-xl hover:bg-primary-600 transition-colors disabled:opacity-50"
                   >
                     {isLoading ? (
-                      <CircularProgress size={18} color="inherit" />
+                      <Spinner className="h-4.5 w-4.5" />
                     ) : (
                       <>
                         Registrar <FiArrowRight className="w-4 h-4" />

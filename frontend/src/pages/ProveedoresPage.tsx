@@ -1,8 +1,6 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
-import CircularProgress from '@mui/material/CircularProgress';
-import { TiEdit, TiUserDelete } from 'react-icons/ti';
-import { MdAdd } from 'react-icons/md';
+import { MdAdd, MdEdit, MdDeleteOutline } from 'react-icons/md';
+import { Spinner } from '@/components/shared/Modal';
 import PageLayout from '@/components/layout/PageLayout';
 import ConfirmDialog from '@/components/feedback/ConfirmDialog';
 import AppSnackbar from '@/components/feedback/AppSnackbar';
@@ -46,8 +44,8 @@ const ProveedoresPage: React.FC = () => {
   return (
     <PageLayout>
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-5" style={{ flexGrow: 1 }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={8}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div className="lg:col-span-8">
             <TableContainer
               title="Proveedores"
               count={proveedores.length}
@@ -104,14 +102,14 @@ const ProveedoresPage: React.FC = () => {
                               onClick={() => abrirEditDialog(proveedor.id)}
                               title="Editar proveedor"
                             >
-                              <TiEdit className="text-lg" />
+                              <MdEdit className="text-lg" />
                             </button>
                             <button
                               className={BTN_ICON_DANGER}
                               onClick={() => abrirDeleteDialog(proveedor.id, proveedor.nombre)}
                               title="Eliminar proveedor"
                             >
-                              <TiUserDelete className="text-lg" />
+                              <MdDeleteOutline className="text-lg" />
                             </button>
                           </div>
                         </td>
@@ -121,13 +119,13 @@ const ProveedoresPage: React.FC = () => {
                 </tbody>
               </table>
             </TableContainer>
-          </Grid>
+          </div>
 
-          <Grid item xs={12} lg={4}>
+          <div className="lg:col-span-4">
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               <div className="px-5 py-3.5 border-b border-gray-100">
                 <span className="flex items-center gap-2 text-gray-700 font-semibold">
-                  <MdAdd className="text-lg text-[#006989]" /> Nuevo Proveedor
+                  <MdAdd className="text-lg text-primary-500" /> Nuevo Proveedor
                 </span>
               </div>
               <div className="px-5 pb-5">
@@ -151,11 +149,11 @@ const ProveedoresPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-lg hover:bg-[#053F61] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-2.5 bg-primary-500 text-white font-semibold text-sm rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {isLoading ? (
                       <>
-                        <CircularProgress size={18} color="inherit" /> Agregando...
+                        <Spinner className="h-4 w-4" /> Agregando...
                       </>
                     ) : (
                       'Agregar Proveedor'
@@ -164,14 +162,14 @@ const ProveedoresPage: React.FC = () => {
                 </form>
               </div>
             </div>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </div>
 
       <FormDialog
         open={editDialogOpen}
         onClose={cerrarEditDialog}
-        icon={<TiEdit className="text-xl text-[#006989]" />}
+        icon={<MdEdit className="text-xl text-primary-500" />}
         title="Editar proveedor"
         onSubmit={editarProveedor}
         isLoading={editLoading}

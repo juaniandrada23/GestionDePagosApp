@@ -35,7 +35,7 @@ const Pagination: React.FC<PaginationProps> = ({
           type="button"
           onClick={() => onPageChange((p) => p - 1)}
           disabled={currentPage === 1}
-          className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-sm rounded-lg text-gray-600 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-sm rounded-lg text-gray-600 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm"
         >
           <MdNavigateBefore className="text-lg" />
           {!isMobile && <span className="ml-0.5">Anterior</span>}
@@ -47,7 +47,7 @@ const Pagination: React.FC<PaginationProps> = ({
           type="button"
           onClick={() => onPageChange((p) => p + 1)}
           disabled={currentPage >= totalPages}
-          className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-sm rounded-lg text-gray-600 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          className="inline-flex items-center px-2.5 py-1.5 border border-gray-300 text-sm rounded-lg text-gray-600 bg-white hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors shadow-sm"
         >
           {!isMobile && <span className="mr-0.5">Siguiente</span>}
           <MdNavigateNext className="text-lg" />

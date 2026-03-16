@@ -10,7 +10,7 @@ interface FormFieldProps {
 
 const FormField: React.FC<FormFieldProps> = ({ label, error, errorMessage, children }) => (
   <div>
-    <label className="block text-sm font-medium text-gray-600 mb-1">{label}</label>
+    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
     {children}
     {error && (
       <span className="flex items-center gap-1 text-red-500 text-xs mt-1">

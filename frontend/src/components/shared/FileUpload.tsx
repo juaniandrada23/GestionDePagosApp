@@ -61,7 +61,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ idUsuario, cargarDatos }) => {
     <>
       <button
         onClick={() => setModalOpen(true)}
-        className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-[#006989] rounded-lg border border-[#006989]/30 bg-[#006989]/5 hover:bg-[#006989]/10 hover:border-[#006989]/50 transition-colors"
+        className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-primary-500 rounded-lg border border-primary-500/30 bg-primary-500/5 hover:bg-primary-500/10 hover:border-primary-500/50 transition-colors"
       >
         <MdAddAPhoto className="text-base" /> Cambiar foto
       </button>
@@ -87,7 +87,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ idUsuario, cargarDatos }) => {
         ) : (
           <label
             htmlFor="fileInput"
-            className="flex flex-col items-center gap-3 py-10 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-[#006989] hover:bg-[#006989]/5 transition-colors"
+            className="flex flex-col items-center gap-3 py-10 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-primary-500 hover:bg-primary-500/5 transition-colors"
           >
             <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center">
               <MdCloudUpload className="text-2xl text-gray-400" />
@@ -125,7 +125,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ idUsuario, cargarDatos }) => {
               type="button"
               onClick={uploadImage}
               disabled={isLoading}
-              className="flex-1 inline-flex items-center justify-center gap-2 py-2 text-sm font-medium text-white bg-[#006989] rounded-lg hover:bg-[#053F61] transition-colors disabled:opacity-50"
+              className="flex-1 inline-flex items-center justify-center gap-2 py-2 text-sm font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50"
             >
               {isLoading ? <Spinner /> : null}
               {isLoading ? 'Subiendo...' : 'Actualizar'}

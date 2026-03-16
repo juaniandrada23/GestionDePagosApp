@@ -1,5 +1,4 @@
 import React from 'react';
-import Skeleton from '@mui/material/Skeleton';
 
 interface TableSkeletonProps {
   rows?: number;
@@ -12,7 +11,7 @@ const TableSkeleton: React.FC<TableSkeletonProps> = ({ rows = 5, columns }) => (
       <tr key={i}>
         {Array.from({ length: columns }).map((_, j) => (
           <td key={j} className="px-4 py-3">
-            <Skeleton animation="wave" variant="rounded" height={20} />
+            <div className="h-5 bg-gray-200 rounded animate-pulse" />
           </td>
         ))}
       </tr>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background-color: #eaebed;
+  background: linear-gradient(135deg, #eaebed 0%, #e2e4e7 50%, #eaebed 100%);
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -20,36 +20,6 @@ button {
 
 ::-webkit-calendar-picker-indicator {
   filter: invert(18%) sepia(80%) saturate(2476%) hue-rotate(171deg) brightness(97%) contrast(103%);
-}
-
-@keyframes slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-slide-up {
-  animation: slide-up 0.3s ease-out;
-}
-
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.animate-modal-in {
-  animation: modal-in 0.2s ease-out;
 }
 
 /* Custom scrollbar */
@@ -73,24 +43,8 @@ button {
 
 /* Text selection */
 ::selection {
-  background-color: rgba(0, 105, 137, 0.15);
+  background-color: theme('colors.primary.500 / 15%');
   color: inherit;
-}
-
-/* Fade-in-up animation for cards */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.35s ease-out both;
 }
 
 /* Smooth table row transitions */

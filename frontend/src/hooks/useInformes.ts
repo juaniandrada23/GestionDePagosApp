@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import Chart from 'chart.js/auto';
-import type { TooltipOptions } from 'chart.js';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import type { CellHookData } from 'jspdf-autotable';
@@ -9,6 +8,7 @@ import { calculosService } from '@/services/calculos.service';
 import { pagosService } from '@/services/pagos.service';
 import { proveedoresService } from '@/services/proveedores.service';
 import { clientesService } from '@/services/clientes.service';
+import { BAR_COLORS, TOOLTIP_STYLE } from '@/config/chartTheme';
 import type { CalculoTotal, CalculoProveedor, IngresosEgresos } from '@/types/calculo';
 import type { ProveedorNombre } from '@/types/proveedor';
 import type { ClienteNombre } from '@/types/cliente';
@@ -17,22 +17,6 @@ import type { Pago } from '@/types/pago';
 const now = new Date();
 const defaultDesde = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-01`;
 const defaultHasta = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-
-const BAR_COLORS = ['#006989', '#FF5714'] as const;
-
-const TOOLTIP_STYLE: Partial<TooltipOptions> = {
-  backgroundColor: 'rgba(17, 24, 39, 0.88)',
-  titleColor: '#F9FAFB',
-  bodyColor: '#E5E7EB',
-  borderColor: 'rgba(255, 255, 255, 0.08)',
-  borderWidth: 1,
-  cornerRadius: 8,
-  padding: 10,
-  titleFont: { size: 13, weight: 'bold' },
-  bodyFont: { size: 12 },
-  displayColors: true,
-  boxPadding: 4,
-};
 
 function createHorizontalBarChart(canvas: HTMLCanvasElement, data: IngresosEgresos): Chart {
   const ctx = canvas.getContext('2d')!;
@@ -191,7 +175,7 @@ export function useInformes() {
     if (Ingresos === 0 && Egresos === 0) return;
 
     const ctx = chartRef.current.getContext('2d')!;
-    chartInstanceRef.current = new Chart(ctx, {
+    chartInstanceRef.current = new Chart<'doughnut'>(ctx, {
       type: 'doughnut',
       data: {
         labels: ['Ingresos', 'Egresos'],
@@ -213,17 +197,7 @@ export function useInformes() {
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: TOOLTIP_STYLE.backgroundColor,
-            titleColor: TOOLTIP_STYLE.titleColor,
-            bodyColor: TOOLTIP_STYLE.bodyColor,
-            borderColor: TOOLTIP_STYLE.borderColor,
-            borderWidth: TOOLTIP_STYLE.borderWidth,
-            cornerRadius: TOOLTIP_STYLE.cornerRadius,
-            padding: TOOLTIP_STYLE.padding,
-            titleFont: TOOLTIP_STYLE.titleFont,
-            bodyFont: TOOLTIP_STYLE.bodyFont,
-            displayColors: TOOLTIP_STYLE.displayColors,
-            boxPadding: TOOLTIP_STYLE.boxPadding,
+            ...TOOLTIP_STYLE,
             callbacks: {
               label: (tooltipItem) => {
                 const values = tooltipItem.dataset.data as number[];

@@ -15,7 +15,7 @@ const SessionTimeoutModal: React.FC = () => {
       onClose={noop}
       title="Sesión a punto de expirar"
       subtitle={`Tu sesión se cerrará en ${secondsLeft} segundos por inactividad.`}
-      icon={<MdAccessTime className="text-xl text-[#006989]" />}
+      icon={<MdAccessTime className="text-xl text-primary-500" />}
       footer={
         <>
           <button type="button" onClick={doLogout} className={BTN_CANCEL}>

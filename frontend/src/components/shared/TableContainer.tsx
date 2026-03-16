@@ -17,12 +17,12 @@ const TableContainer: React.FC<TableContainerProps> = ({
   headerAction,
   children,
 }) => (
-  <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+  <div className="bg-white rounded-xl shadow-sm border border-gray-200 ring-1 ring-black/5 overflow-hidden">
     <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3">
       <h2 className="text-lg font-semibold text-gray-800">{title}</h2>
       <div className="flex items-center gap-3">
         {count !== undefined && (
-          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#006989]/10 text-[#006989]">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-500/10 text-primary-500">
             {count} {count === 1 ? countLabelSingular || countLabel : countLabel}
           </span>
         )}

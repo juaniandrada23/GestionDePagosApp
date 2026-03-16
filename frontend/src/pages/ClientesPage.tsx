@@ -1,5 +1,4 @@
 import React from 'react';
-import Skeleton from '@mui/material/Skeleton';
 import { MdSearch, MdAdd, MdEdit, MdDeleteOutline } from 'react-icons/md';
 import { FiUsers } from 'react-icons/fi';
 import PageLayout from '@/components/layout/PageLayout';
@@ -42,7 +41,7 @@ const ClientesPage: React.FC = () => {
   } = useClientes();
 
   const inputCls =
-    'w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none';
+    'w-full px-3 py-2.5 border border-gray-300 rounded-xl text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none';
 
   const renderFormFields = () => (
     <div className="space-y-3">
@@ -96,8 +95,8 @@ const ClientesPage: React.FC = () => {
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-[#006989]/10 flex items-center justify-center">
-              <FiUsers className="text-lg text-[#006989]" />
+            <div className="w-9 h-9 rounded-lg bg-primary-500/10 flex items-center justify-center">
+              <FiUsers className="text-lg text-primary-500" />
             </div>
             <h1 className="text-lg font-bold text-gray-900">Clientes</h1>
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
@@ -112,14 +111,14 @@ const ClientesPage: React.FC = () => {
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
                 placeholder="Buscar..."
-                className="pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#006989] focus:border-[#006989] outline-none w-48"
+                className="pl-9 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none w-48"
               />
             </div>
             {isAdmin && (
               <button
                 type="button"
                 onClick={abrirCrear}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white rounded-lg bg-[#006989] hover:bg-[#053F61] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-sm font-semibold text-white rounded-lg bg-primary-500 hover:bg-primary-600 transition-colors"
               >
                 <MdAdd className="text-lg" /> Nuevo
               </button>
@@ -130,9 +129,10 @@ const ClientesPage: React.FC = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-xl border border-gray-200 p-4">
-                <Skeleton variant="rounded" width="70%" height={16} />
-                <Skeleton variant="rounded" width="40%" height={12} sx={{ mt: 1 }} />
+              <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-3/4" />
+                <div className="h-3 bg-gray-200 rounded w-2/5 mt-2" />
+                <div className="h-10 bg-gray-200 rounded mt-3" />
               </div>
             ))}
           </div>
@@ -150,7 +150,7 @@ const ClientesPage: React.FC = () => {
             {clientes.map((c) => (
               <div
                 key={c.id}
-                className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all cursor-pointer"
+                className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-gray-300 transition-all cursor-pointer hover:-translate-y-0.5 hover:shadow-card-hover"
                 onClick={() => abrirDetalle(c)}
               >
                 <div className="flex items-start justify-between">

@@ -1,7 +1,6 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
 import { MdAdd, MdEdit, MdDeleteOutline } from 'react-icons/md';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Spinner } from '@/components/shared/Modal';
 import PageLayout from '@/components/layout/PageLayout';
 import ConfirmDialog from '@/components/feedback/ConfirmDialog';
 import AppSnackbar from '@/components/feedback/AppSnackbar';
@@ -47,11 +46,11 @@ const MediosPagoPage: React.FC = () => {
   return (
     <PageLayout>
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-5">
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={4}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div className="lg:col-span-4">
             <CollapsibleSection
               title="Nuevo Medio de Pago"
-              icon={<MdAdd className="text-lg text-[#006989]" />}
+              icon={<MdAdd className="text-lg text-primary-500" />}
             >
               <form
                 className="space-y-4 pt-4"
@@ -72,11 +71,11 @@ const MediosPagoPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-lg hover:bg-[#053F61] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-primary-500 text-white font-semibold text-sm rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
-                      <CircularProgress size={18} color="inherit" /> Agregando...
+                      <Spinner className="h-4 w-4" /> Agregando...
                     </>
                   ) : (
                     'Agregar'
@@ -84,9 +83,9 @@ const MediosPagoPage: React.FC = () => {
                 </button>
               </form>
             </CollapsibleSection>
-          </Grid>
+          </div>
 
-          <Grid item xs={12} lg={8}>
+          <div className="lg:col-span-8">
             <TableContainer
               title="Medios de Pago"
               count={mediosPago.length}
@@ -150,14 +149,14 @@ const MediosPagoPage: React.FC = () => {
                 </tbody>
               </table>
             </TableContainer>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </div>
 
       <FormDialog
         open={!!medioPagoSeleccionado}
         onClose={handleCancelar}
-        icon={<MdEdit className="text-xl text-[#006989]" />}
+        icon={<MdEdit className="text-xl text-primary-500" />}
         title="Editar medio de pago"
         subtitle={`Renombrar \u201C${medioPagoSeleccionado}\u201D`}
         onSubmit={handleActualizar}

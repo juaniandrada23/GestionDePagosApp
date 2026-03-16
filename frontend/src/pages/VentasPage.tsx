@@ -1,9 +1,4 @@
 import React from 'react';
-import Grid from '@mui/material/Grid';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import CircularProgress from '@mui/material/CircularProgress';
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { MdFilterList, MdAdd, MdSearch, MdEdit } from 'react-icons/md';
 import PageLayout from '@/components/layout/PageLayout';
 import AppSnackbar from '@/components/feedback/AppSnackbar';
@@ -17,6 +12,7 @@ import ErrorAlert from '@/components/shared/ErrorAlert';
 import FormField from '@/components/shared/FormField';
 import FormDialog from '@/components/shared/FormDialog';
 import Pagination from '@/components/shared/Pagination';
+import { Spinner } from '@/components/shared/Modal';
 import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useVentas } from '@/hooks/useVentas';
 import { useMobileScreen } from '@/hooks/useMobileScreen';
@@ -83,7 +79,7 @@ const VentasPage: React.FC = () => {
       <div className="px-4 sm:px-6 lg:px-8 py-6 space-y-5">
         <CollapsibleSection
           title="Filtros"
-          icon={<MdFilterList className="text-lg text-[#006989]" />}
+          icon={<MdFilterList className="text-lg text-primary-500" />}
           defaultOpen={false}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
@@ -141,11 +137,7 @@ const VentasPage: React.FC = () => {
               disabled={isLoading}
               className={BTN_PRIMARY}
             >
-              {isLoading ? (
-                <CircularProgress size={16} color="inherit" />
-              ) : (
-                <MdSearch className="text-base" />
-              )}
+              {isLoading ? <Spinner /> : <MdSearch className="text-base" />}
               Aplicar
             </button>
           </div>
@@ -153,11 +145,11 @@ const VentasPage: React.FC = () => {
 
         <ErrorAlert message={error} />
 
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={4}>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+          <div className="lg:col-span-4">
             <CollapsibleSection
               title="Nueva Venta"
-              icon={<MdAdd className="text-lg text-[#006989]" />}
+              icon={<MdAdd className="text-lg text-primary-500" />}
             >
               <form className="space-y-4 pt-4" onSubmit={handleFormSubmit}>
                 <FormField label="Cliente / Proveedor" error={formErrors.cliente}>
@@ -189,17 +181,19 @@ const VentasPage: React.FC = () => {
                 </FormField>
 
                 <FormField label="Monto" error={formErrors.monto}>
-                  <OutlinedInput
-                    type="number"
-                    name="monto"
-                    value={formData.monto}
-                    onChange={handleInputChange}
-                    required
-                    size="small"
-                    fullWidth
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    sx={{ borderRadius: '8px', fontSize: '14px' }}
-                  />
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm pointer-events-none">
+                      $
+                    </span>
+                    <input
+                      type="number"
+                      name="monto"
+                      value={formData.monto}
+                      onChange={handleInputChange}
+                      required
+                      className={`${INPUT_CLASS} pl-7`}
+                    />
+                  </div>
                 </FormField>
 
                 <FormField label="Medio de Pago" error={formErrors.medioPago}>
@@ -233,17 +227,19 @@ const VentasPage: React.FC = () => {
                 </FormField>
 
                 <FormField label="Dolar del dia" error={formErrors.usdDelDia}>
-                  <OutlinedInput
-                    type="number"
-                    name="usdDelDia"
-                    value={formData.usdDelDia}
-                    onChange={handleInputChange}
-                    required
-                    size="small"
-                    fullWidth
-                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                    sx={{ borderRadius: '8px', fontSize: '14px' }}
-                  />
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500 text-sm pointer-events-none">
+                      $
+                    </span>
+                    <input
+                      type="number"
+                      name="usdDelDia"
+                      value={formData.usdDelDia}
+                      onChange={handleInputChange}
+                      required
+                      className={`${INPUT_CLASS} pl-7`}
+                    />
+                  </div>
                 </FormField>
 
                 <FormField
@@ -253,24 +249,23 @@ const VentasPage: React.FC = () => {
                     </>
                   }
                 >
-                  <TextareaAutosize
-                    minRows={3}
+                  <textarea
                     name="descripcion"
                     value={formData.descripcion}
                     onChange={handleInputChange}
+                    rows={3}
                     className={`${INPUT_CLASS} resize-none`}
-                    style={{ fontFamily: 'inherit' }}
                   />
                 </FormField>
 
                 <button
                   type="submit"
                   disabled={cargandoForm}
-                  className="w-full py-2.5 bg-[#006989] text-white font-semibold text-sm rounded-lg hover:bg-[#053F61] shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 bg-primary-500 text-white font-semibold text-sm rounded-lg hover:bg-primary-600 shadow-sm hover:shadow-md transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {cargandoForm ? (
                     <>
-                      <CircularProgress size={18} color="inherit" /> Agregando...
+                      <Spinner /> Agregando...
                     </>
                   ) : (
                     'Agregar Venta'
@@ -278,9 +273,9 @@ const VentasPage: React.FC = () => {
                 </button>
               </form>
             </CollapsibleSection>
-          </Grid>
+          </div>
 
-          <Grid item xs={12} lg={8}>
+          <div className="lg:col-span-8">
             <TableContainer
               title="Ventas"
               count={pagos.length}
@@ -368,14 +363,14 @@ const VentasPage: React.FC = () => {
                 isMobile={isMobile}
               />
             </TableContainer>
-          </Grid>
-        </Grid>
+          </div>
+        </div>
       </div>
 
       <FormDialog
         open={!!editPago}
         onClose={cerrarEditDialog}
-        icon={<MdEdit className="text-xl text-[#006989]" />}
+        icon={<MdEdit className="text-xl text-primary-500" />}
         title="Editar venta"
         subtitle={`Modificar los datos de la venta #${editPago?.idPago}`}
         onSubmit={handleEditSubmit}
@@ -471,7 +466,6 @@ const VentasPage: React.FC = () => {
             onChange={handleEditChange}
             rows={2}
             className={`${INPUT_CLASS} resize-none`}
-            style={{ fontFamily: 'inherit' }}
           />
         </FormField>
       </FormDialog>

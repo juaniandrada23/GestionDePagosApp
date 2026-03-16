@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Spinner } from '@/components/shared/Modal';
 import { MdFilterList, MdSearch, MdTrendingUp, MdTrendingDown, MdClose } from 'react-icons/md';
-import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FiArrowUp, FiArrowDown, FiClock } from 'react-icons/fi';
 import { LuBadgeDollarSign, LuWallet, LuArrowUpRight, LuArrowDownRight } from 'react-icons/lu';
-import { FiClock } from 'react-icons/fi';
 import PageLayout from '@/components/layout/PageLayout';
 import CollapsibleSection from '@/components/shared/CollapsibleSection';
 import EmptyState from '@/components/shared/EmptyState';
@@ -13,8 +12,7 @@ import { useRequireAuth } from '@/hooks/useRequireAuth';
 import { useDashboard } from '@/hooks/useDashboard';
 import { INPUT_CLASS, SELECT_CLASS, BTN_PRIMARY } from '@/config/constants';
 import { formatMonto, formatFechaCorta } from '@/utils/formatters';
-
-const DONUT_COLORS = ['#006989', '#FF5714', '#10B981', '#F59E0B', '#8B5CF6', '#EC4899', '#6366F1'];
+import { DONUT_COLORS } from '@/config/chartTheme';
 
 const DashboardPage: React.FC = () => {
   useRequireAuth();
@@ -73,9 +71,9 @@ const DashboardPage: React.FC = () => {
                     className={`font-medium ${porcentajePagosMes > 0 ? 'text-emerald-600' : 'text-red-600'}`}
                   >
                     {porcentajePagosMes > 0 ? (
-                      <FaArrowUp className="inline w-3 h-3" />
+                      <FiArrowUp className="inline w-3 h-3" />
                     ) : (
-                      <FaArrowDown className="inline w-3 h-3" />
+                      <FiArrowDown className="inline w-3 h-3" />
                     )}{' '}
                     {Math.abs(porcentajePagosMes)}%
                   </span>
@@ -135,7 +133,7 @@ const DashboardPage: React.FC = () => {
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Egresos del Mes
               </span>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-50 text-[#FF5714]">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-50 text-accent">
                 <LuArrowDownRight className="text-xl" />
               </div>
             </div>
@@ -143,12 +141,12 @@ const DashboardPage: React.FC = () => {
             <p className="text-xs text-gray-400 mt-1">Pagos del mes actual</p>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-[#006989] p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 border-l-4 border-l-primary-500 p-5">
             <div className="flex items-center justify-between mb-3">
               <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                 Dólar Blue
               </span>
-              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-[#006989]/10 text-[#006989]">
+              <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-primary-500/10 text-primary-500">
                 <LuBadgeDollarSign className="text-xl" />
               </div>
             </div>
@@ -158,9 +156,9 @@ const DashboardPage: React.FC = () => {
                 className={`font-semibold ${porcentajeUsd >= 0 ? 'text-emerald-600' : 'text-red-600'}`}
               >
                 {porcentajeUsd >= 0 ? (
-                  <FaArrowUp className="inline mr-0.5 w-3 h-3" />
+                  <FiArrowUp className="inline mr-0.5 w-3 h-3" />
                 ) : (
-                  <FaArrowDown className="inline mr-0.5 w-3 h-3" />
+                  <FiArrowDown className="inline mr-0.5 w-3 h-3" />
                 )}
                 {Math.abs(porcentajeUsd)}%
               </span>{' '}
@@ -171,7 +169,7 @@ const DashboardPage: React.FC = () => {
 
         <CollapsibleSection
           title="Filtros"
-          icon={<MdFilterList className="text-lg text-[#006989]" />}
+          icon={<MdFilterList className="text-lg text-primary-500" />}
           defaultOpen={filtrosOpen}
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-4">
@@ -208,11 +206,7 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="mt-4 flex justify-end">
             <button type="button" onClick={filtrar} disabled={isLoading} className={BTN_PRIMARY}>
-              {isLoading ? (
-                <CircularProgress size={16} color="inherit" />
-              ) : (
-                <MdSearch className="text-base" />
-              )}
+              {isLoading ? <Spinner /> : <MdSearch className="text-base" />}
               Filtrar
             </button>
           </div>
@@ -221,12 +215,12 @@ const DashboardPage: React.FC = () => {
         {appliedLabel && (
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm text-gray-500">Filtros aplicados:</span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#006989]/10 text-[#006989] text-sm font-medium rounded-full">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-500/10 text-primary-500 text-sm font-medium rounded-full">
               {appliedLabel}
               <button
                 type="button"
                 onClick={resetFilters}
-                className="ml-0.5 hover:bg-[#006989]/20 rounded-full p-0.5 transition-colors"
+                className="ml-0.5 hover:bg-primary-500/20 rounded-full p-0.5 transition-colors"
               >
                 <MdClose className="w-3.5 h-3.5" />
               </button>
@@ -238,7 +232,7 @@ const DashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#006989]" />
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Cantidad de pagos</h3>
               <p className="text-xs text-gray-400 mt-0.5">{chartSubtitle}</p>
@@ -258,7 +252,7 @@ const DashboardPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#006989]" />
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Ingresos y Egresos</h3>
               <p className="text-xs text-gray-400 mt-0.5">{chartSubtitle}</p>
@@ -280,7 +274,7 @@ const DashboardPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#006989]" />
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Rentabilidad Mensual</h3>
               <p className="text-xs text-gray-400 mt-0.5">
@@ -302,7 +296,7 @@ const DashboardPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#006989]" />
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Medios de Pago</h3>
               <p className="text-xs text-gray-400 mt-0.5">{staticSubtitle}</p>
@@ -342,7 +336,7 @@ const DashboardPage: React.FC = () => {
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#006989]" />
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Últimos Pagos</h3>
               <p className="text-xs text-gray-400 mt-0.5">Actividad reciente</p>

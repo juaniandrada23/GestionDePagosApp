@@ -1,5 +1,5 @@
 import React, { useState, type ReactNode } from 'react';
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
+import { MdKeyboardArrowDown } from 'react-icons/md';
 
 interface CollapsibleSectionProps {
   title: string;
@@ -27,13 +27,17 @@ const CollapsibleSection: React.FC<CollapsibleSectionProps> = ({
           {icon}
           {title}
         </span>
-        {open ? (
-          <MdKeyboardArrowUp className="text-xl text-gray-400" />
-        ) : (
-          <MdKeyboardArrowDown className="text-xl text-gray-400" />
-        )}
+        <MdKeyboardArrowDown
+          className={`text-xl text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
       </button>
-      {open && <div className="px-5 pb-5 border-t border-gray-100">{children}</div>}
+      <div
+        className={`grid ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'} transition-[grid-template-rows] duration-200`}
+      >
+        <div className="overflow-hidden">
+          <div className="px-5 pb-5 border-t border-gray-100">{children}</div>
+        </div>
+      </div>
     </div>
   );
 };

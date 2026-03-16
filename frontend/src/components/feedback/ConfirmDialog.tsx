@@ -31,7 +31,7 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     title={title}
     subtitle={message}
     icon={
-      <MdWarningAmber className={`text-xl ${destructive ? 'text-red-500' : 'text-[#006989]'}`} />
+      <MdWarningAmber className={`text-xl ${destructive ? 'text-red-500' : 'text-primary-500'}`} />
     }
     onSubmit={onConfirm}
     submitLabel={confirmText}

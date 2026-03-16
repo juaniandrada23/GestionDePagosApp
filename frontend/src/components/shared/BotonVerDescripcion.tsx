@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BsFileTextFill } from 'react-icons/bs';
+import { FiFileText } from 'react-icons/fi';
 import { MdClose } from 'react-icons/md';
 import Modal from '@/components/shared/Modal';
 import type { Pago } from '@/types/pago';
@@ -14,11 +14,11 @@ const BotonVerDescripcion: React.FC<Props> = ({ pago }) => {
   return (
     <>
       <button
-        className="p-2 rounded-lg text-[#006989] hover:bg-[#006989]/10 transition-colors"
+        className="p-2 rounded-lg text-primary-500 hover:bg-primary-500/10 transition-colors"
         onClick={() => setModalOpen(true)}
         title="Ver descripción"
       >
-        <BsFileTextFill className="text-lg" />
+        <FiFileText className="text-lg" />
       </button>
       <Modal
         open={modalOpen}
@@ -40,7 +40,7 @@ const BotonVerDescripcion: React.FC<Props> = ({ pago }) => {
           </p>
         ) : (
           <div className="text-center py-6">
-            <BsFileTextFill className="text-3xl text-gray-300 mx-auto mb-2" />
+            <FiFileText className="text-3xl text-gray-300 mx-auto mb-2" />
             <p className="text-sm text-gray-400">Este pago no posee descripción</p>
           </div>
         )}

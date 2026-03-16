@@ -13,7 +13,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({ open, text = 'Cargando...' 
   return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white px-8 py-6 rounded-2xl shadow-xl flex flex-col items-center gap-3 animate-modal-in">
-        <Spinner className="h-8 w-8 text-[#006989]" />
+        <Spinner className="h-8 w-8 text-primary-500" />
         <p className="text-sm font-medium text-gray-600">{text}</p>
       </div>
     </div>,

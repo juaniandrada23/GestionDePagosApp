@@ -1,8 +1,7 @@
 import React from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
-import { MdSearch, MdClose, MdTrendingUp, MdTrendingDown } from 'react-icons/md';
+import { Spinner } from '@/components/shared/Modal';
+import { MdSearch, MdClose, MdTrendingUp, MdTrendingDown, MdPictureAsPdf } from 'react-icons/md';
 import { LuArrowUpRight, LuArrowDownRight, LuWallet } from 'react-icons/lu';
-import { FaRegFilePdf } from 'react-icons/fa6';
 import PageLayout from '@/components/layout/PageLayout';
 import TableContainer from '@/components/shared/TableContainer';
 import TableSkeleton from '@/components/shared/TableSkeleton';
@@ -97,7 +96,7 @@ const InformesPage: React.FC = () => {
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     Egresos del Período
                   </span>
-                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-50 text-[#FF5714]">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-orange-50 text-accent">
                     <LuArrowDownRight className="text-xl" />
                   </div>
                 </div>
@@ -148,7 +147,7 @@ const InformesPage: React.FC = () => {
               <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-100">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#FF5714] flex-shrink-0" />
+                    <span className="w-2 h-2 rounded-full bg-accent flex-shrink-0" />
                     <h3 className="text-sm font-semibold text-gray-800 truncate">
                       {filtroProveedor}
                     </h3>
@@ -252,7 +251,7 @@ const InformesPage: React.FC = () => {
             </div>
           ) : (
             <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="h-1 bg-[#006989]" />
+              <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
               <div className="px-5 py-4 border-b border-gray-100">
                 <h3 className="text-base font-semibold text-gray-800">
                   Distribución Ingresos / Egresos
@@ -311,7 +310,7 @@ const InformesPage: React.FC = () => {
 
           {/* Filters */}
           <div className="lg:col-span-1 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="h-1 bg-[#006989]" />
+            <div className="h-1 bg-gradient-to-r from-primary-500 to-primary-400" />
             <div className="px-5 py-4 border-b border-gray-100">
               <h3 className="text-base font-semibold text-gray-800">Filtros</h3>
             </div>
@@ -379,17 +378,13 @@ const InformesPage: React.FC = () => {
                 disabled={isLoading}
                 className={`w-full ${BTN_PRIMARY}`}
               >
-                {isLoading ? (
-                  <CircularProgress size={16} color="inherit" />
-                ) : (
-                  <MdSearch className="text-base" />
-                )}
+                {isLoading ? <Spinner /> : <MdSearch className="text-base" />}
                 Aplicar
               </button>
               <button
                 type="button"
                 onClick={resetFiltro}
-                className="w-full text-sm text-[#006989] hover:text-[#053F61] font-medium transition-colors"
+                className="w-full text-sm text-primary-500 hover:text-primary-600 font-medium transition-colors"
               >
                 Limpiar filtros
               </button>
@@ -401,12 +396,12 @@ const InformesPage: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm text-gray-500">Filtros aplicados:</span>
           {filtroProveedor && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#006989]/10 text-[#006989] text-sm font-medium rounded-full">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-500/10 text-primary-500 text-sm font-medium rounded-full">
               Proveedor: {filtroProveedor}
               <button
                 type="button"
                 onClick={resetFiltro}
-                className="ml-0.5 hover:bg-[#006989]/20 rounded-full p-0.5 transition-colors"
+                className="ml-0.5 hover:bg-primary-500/20 rounded-full p-0.5 transition-colors"
               >
                 <MdClose className="w-3.5 h-3.5" />
               </button>
@@ -424,12 +419,12 @@ const InformesPage: React.FC = () => {
               </button>
             </span>
           )}
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#006989]/10 text-[#006989] text-sm font-medium rounded-full">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-500/10 text-primary-500 text-sm font-medium rounded-full">
             Período: {periodoLabel}
             <button
               type="button"
               onClick={resetFiltro}
-              className="ml-0.5 hover:bg-[#006989]/20 rounded-full p-0.5 transition-colors"
+              className="ml-0.5 hover:bg-primary-500/20 rounded-full p-0.5 transition-colors"
             >
               <MdClose className="w-3.5 h-3.5" />
             </button>
@@ -447,7 +442,7 @@ const InformesPage: React.FC = () => {
               disabled={!resumen}
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              <FaRegFilePdf /> Generar PDF
+              <MdPictureAsPdf /> Generar PDF
             </button>
           }
         >
